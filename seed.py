@@ -1,8 +1,9 @@
 import sqlite3
-from player import Player
-from opponent import Opponent
-from nation import Nation
-from skill import Skill
+
+from classes.player import Player
+from classes.opponent import Opponent
+from classes.nation import Nation
+from classes.skill import Skill
 
 #drop tables
 Player.drop_table()
@@ -40,6 +41,12 @@ skill_data = [
     ("air glide", "glide through the air using bending", 15, "air")
 ]
 
+player_data = [
+    ("Tiana"),
+    ("Isaac"),
+    ("Michael")
+]
+
 #create instances
 ##opponent
 for data in opponent_data:
@@ -53,3 +60,7 @@ for data in nation_data:
 for data in skill_data:
     name, description, point_cost = data
     Skill.create(name, description, point_cost)
+##player data (more to see)
+for data in player_data:
+    username = data
+    Player.create(username)
