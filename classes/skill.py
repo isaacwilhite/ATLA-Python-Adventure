@@ -4,10 +4,11 @@ CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
 class Skill:
-    def __init__(self, name, description, point_cost, id=None):
+    def __init__(self, name, description, point_cost, category, id=None):
         self.name = name
         self.description = description #need description property
         self.point_cost = point_cost #need point-cost property
+        self.category = category
         self.id = id
 
     @property
@@ -24,11 +25,33 @@ class Skill:
     def create_table(cls):
         sql = """
         CREATE TABLE IF NOT EXISTS skills (
-            id INTEGER PRIMARY KEY
+            id INTEGER PRIMARY KEY,
             name TEXT,
             description TEXT,
-            point_cost INTEGER
-        )
+            point_cost INTEGER,
+            category TEXT)
         """
         CURSOR.execute(sql)
         CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        sql = """
+            DROP TABLE IF EXISTS skills
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    def save(self):
+        sql = """
+            INSERT INTO skills (name, description, point_cost, category)
+            VALUES (?, ?, ?, ?)
+        """
+        CURSOR.execute(sql, (self.name, self.description, self.point_cost, self.category))
+        CONN.commit()
+
+    @classmethod
+    def create(cls, name, description, point_cost, category):
+        skill = cls(name, description, point_cost, category)
+        skill.save()
+        return skill

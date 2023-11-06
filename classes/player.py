@@ -5,10 +5,9 @@ CURSOR = CONN.cursor()
 
 class Player:
 
-    def __init__(self, username="", health = 10, id=None):
+    def __init__(self, username="", id=None):
         self.username = username.lower()
-        self.health = health
-        self.points = 0
+        self.health = 10
         self.id = id
 
     @property
@@ -31,10 +30,29 @@ class Player:
             CREATE TABLE IF NOT EXISTS players (
                 id INTEGER PRIMARY KEY,
                 username TEXT,
-                health INTEGER,
-                points INTEGER
-            )
+                health INTEGER)
         """
         CURSOR.execute(sql)
         CONN.commit()
-        CONN.close()
+
+    @classmethod
+    def drop_table(cls):
+        sql = """
+            DROP TABLE IF EXISTS players
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    def save(self):
+        sql = """
+            INSERT INTO players (username, health)
+            VALUES (?, ?, ?)
+        """
+        CURSOR.execute(sql, (self.username, self.health))
+        CONN.commit()
+
+    @classmethod
+    def create(cls, username, health):
+        player = cls(username, health)
+        player.save()
+        return player
