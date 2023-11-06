@@ -1,7 +1,24 @@
+import click
+
 from helpers import (
+    user_prompt,
     exit_program,
     helper_1
 )
+
+@click.command()
+@click.option('--username', prompt='Enter your username', help='Your username to play the game')
+
+
+def welcome():
+    file_path = 'txt/intro.txt'
+
+    with open(file_path, 'r') as file:
+        content = file.read()
+        print(content)
+    ##prompt user for a choice
+
+    user_prompt()
 
 
 def main():
@@ -23,4 +40,5 @@ def menu():
 
 
 if __name__ == "__main__":
+    welcome()
     main()
