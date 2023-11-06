@@ -8,7 +8,6 @@ class Player:
     def __init__(self, username="", id=None):
         self.username = username.lower()
         self.health = 10
-        self.points = 10
         self.id = id
 
     @property
@@ -32,7 +31,6 @@ class Player:
                 id INTEGER PRIMARY KEY,
                 username TEXT,
                 health INTEGER,
-                points INTEGER
             )
         """
         CURSOR.execute(sql)
@@ -49,14 +47,14 @@ class Player:
 
     def save(self):
         sql = """
-            INSERT INTO players (username, health, points)
+            INSERT INTO players (username, health)
             VALUES (?, ?, ?)
         """
-        CURSOR.execute(sql, (self.username, self.health, self.points))
+        CURSOR.execute(sql, (self.username, self.health))
         CONN.commit()
 
     @classmethod
-    def create(cls, username, health, points=0):
-        player = cls(username, health, points)
+    def create(cls, username, health):
+        player = cls(username, health)
         player.save()
         return player
