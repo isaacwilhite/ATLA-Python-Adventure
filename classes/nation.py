@@ -23,7 +23,7 @@ class Nation:
     def description(self):
         return self._description
     @description.setter
-    def name(self, new_description):
+    def description(self, new_description):
         if isinstance(new_description, str) and not hasattr(self, 'description'):
             self._description = new_description
         else:

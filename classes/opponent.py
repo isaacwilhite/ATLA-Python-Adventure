@@ -25,7 +25,7 @@ class Opponent:
     def dialogue(self):
         return self._dialogue
     @dialogue.setter
-    def name(self, new_dialogue):
+    def dialogue(self, new_dialogue):
         if isinstance(new_dialogue, str) and not hasattr(self, 'dialogue'):
             self._dialogue = new_dialogue
         else:
