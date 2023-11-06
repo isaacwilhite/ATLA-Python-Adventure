@@ -32,3 +32,25 @@ class Skill:
         """
         CURSOR.execute(sql)
         CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        sql = """
+            DROP TABLE IF EXISTS skills
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    def save(self):
+        sql = """
+            INSERT INTO skills (name, description, point_cost)
+            VALUES (?, ?, ?)
+        """
+        CURSOR.execute(sql, (self.name, self.description, self.point_cost))
+        CONN.commit()
+
+    @classmethod
+    def create(cls, name, description, point_cost):
+        skill = cls(name, description, point_cost)
+        skill.save()
+        return skill
