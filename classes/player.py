@@ -1,13 +1,15 @@
 #classes/player.py
-
 import sqlite3
+import random
+
+# ELEMENTS = ["water", "air", "fire", "earth"]
 
 CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
 class Player:
 
-    def __init__(self, username="", element, health = 10, skill, id=None)
+    def __init__(self, username="", health = 10, id=None)
         self.username = username.lower()
         self.health = health
         self.points = 0
@@ -26,3 +28,16 @@ class Player:
             raise Exception("Username cannot be reset")
         else:
             self._username = new_user
+
+    @classmethod
+    def create_table(cls):
+        sql = """
+            CREATE TABLE IF NOT EXISTS players (
+                id INTEGER PRIMARY KEY,
+                username TEXT,
+                health INTEGER,
+                points INTEGER
+            )
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
