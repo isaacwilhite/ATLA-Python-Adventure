@@ -31,8 +31,10 @@ class Player:
             CREATE TABLE IF NOT EXISTS players (
                 id INTEGER PRIMARY KEY,
                 username TEXT,
-                health INTEGER
+                health INTEGER,
+                points INTEGER
             )
         """
         CURSOR.execute(sql)
         CONN.commit()
+        CONN.close()
