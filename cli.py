@@ -1,14 +1,6 @@
 import click
 
-from helpers import (
-    user_prompt,
-    exit_program,
-    helper_1
-)
-
-@click.command()
-@click.option('--username', prompt='Enter your username', help='Your username to play the game')
-
+from helpers import exit_program
 
 def welcome():
     file_path = 'txt/intro.txt'
@@ -16,29 +8,33 @@ def welcome():
     with open(file_path, 'r') as file:
         content = file.read()
         print(content)
-    ##prompt user for a choice
+##prompt user for a choice
 
-    user_prompt()
+def user_prompt():
+    click.echo("Are you a returning user? (yes/no)")
 
-
-def main():
     while True:
-        menu()
-        choice = input("> ")
-        if choice == "0":
-            exit_program()
-        elif choice == "1":
-            helper_1()
+        user_choice = click.prompt("Your choice", type=click.Choice(['yes', 'no']))
+        if user_choice == 'yes':
+            login_existing_user()
+        elif user_choice == 'no':
+            create_new_user()
         else:
-            print("Invalid choice")
+            click.echo("Invalid choice. Please enter 'yes' or 'no'.")
 
+def create_new_user():
+    # Implement the logic to create a new user
+    # You can prompt for additional user information if needed
+    click.echo("Welcome, new Avatar! You can create your character now.")
+    # Add code to handle user registration
 
-def menu():
-    print("Please select an option:")
-    print("0. Exit the program")
-    print("1. Some useful function")
-
+def login_existing_user(username):
+    # Implement the logic to log in an existing user
+    # You can prompt for the user's password or other login details
+    click.echo(f"Welcome back, {username}! You can resume your journey as an Avatar.")
+    # Add code to handle user login
 
 if __name__ == "__main__":
     welcome()
-    main()
+    user_prompt()
+    exit_program
