@@ -1,4 +1,4 @@
-#lib/config.py
+#classes/player.py
 
 import sqlite3
 
@@ -7,4 +7,22 @@ CURSOR = CONN.cursor()
 
 class Player:
 
-  def __init__(self, )
+    def __init__(self, username="", element, health = 10, skill, id=None)
+        self.username = username.lower()
+        self.health = health
+        self.points = 0
+        self.id = id
+
+    @property
+    def username(self):
+        return self._username
+    @username.setter
+    def username(self, new_user):
+        if not isinstance(new_user, str):
+            raise TypeError("Username must be a string")
+        elif len(new_user) not in range(1, 11):
+            raise Exception("Username should be between 1 and 10 characters")
+        elif not hasattr(self, "username"):
+            raise Exception("Username cannot be reset")
+        else:
+            self._username = new_user
