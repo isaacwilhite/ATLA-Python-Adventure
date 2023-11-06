@@ -33,11 +33,10 @@ class Nation:
     def create_table(cls):
         sql = """
         CREATE TABLE IF NOT EXISTS nations (
-            id INTEGER PRIMARY KEY
+            id INTEGER PRIMARY KEY,
             name TEXT,
             description TEXT,
-            category TEXT
-        )
+            category TEXT)
         """
         CURSOR.execute(sql)
         CONN.commit()

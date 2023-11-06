@@ -41,13 +41,14 @@ skill_data = [
     ("air glide", "glide through the air using bending", 15, "air")
 ]
 
-player_data = [
-    ("Tiana"),
-    ("Isaac"),
-    ("Michael")
-]
+# player_data = [
+#     ("Tiana"),
+#     ("Isaac"),
+#     ("Michael")
+# ]
 
 #create instances
+
 ##opponent
 for data in opponent_data:
     name, dialogue, solution, reward_id, nation_id = data
@@ -58,9 +59,9 @@ for data in nation_data:
     Nation.create(name, description, category)
 ##skill
 for data in skill_data:
-    name, description, point_cost = data
-    Skill.create(name, description, point_cost)
+    name, description, point_cost, category = data
+    Skill.create(name, description, point_cost, category)
 ##player data (more to see)
-for data in player_data:
-    username = data
-    Player.create(username)
+# for data in player_data:
+#     username = data
+#     Player.create(username)

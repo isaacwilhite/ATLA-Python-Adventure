@@ -35,13 +35,12 @@ class Opponent:
     def create_table(cls):
         sql = """
         CREATE TABLE IF NOT EXISTS opponents (
-            id INTEGER PRIMARY KEY
+            id INTEGER PRIMARY KEY,
             name TEXT,
             dialogue TEXT,
             solution TEXT,
             health INTEGER,
-            nation_id INTEGER
-        )
+            nation_id INTEGER)
         """
         CURSOR.execute(sql)
         CONN.commit()
