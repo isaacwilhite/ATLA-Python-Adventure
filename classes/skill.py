@@ -4,10 +4,11 @@ CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
 class Skill:
-    def __init__(self, name, description, point_cost):
+    def __init__(self, name, description, point_cost, id=None):
         self.name = name
-        self.description = description
-        self.point_cost = point_cost
+        self.description = description #need description property
+        self.point_cost = point_cost #need point-cost property
+        self.id = id
 
     @property
     def name(self):
