@@ -12,10 +12,11 @@ class Battle():
         self.id = id
 
     def start_battle(self, player, map_location):
-        #what opponents are available on the map and if they have battled
+        #what opponents are available at that location
         available_opponents = self.available_opponents(map_location, player)
 
         #!Battle Loop
+        #no loop needed, only put in one opponent
         for opponent in available_opponents:
             battle_result = self.battle(player, opponent)
 
@@ -39,7 +40,8 @@ class Battle():
     def battle(self, player, opponent):
         #! battle logic, take turns, return "win", "lose", "retreat"
         pass
-
+#!automatic checkpoint function
+#!checkpoint in map menu
     #~~~~~~~~~~~~~~~~~~~~~~CRUD~~~~~~~~~~~~~~~~~~~
     @classmethod
     def create_table(cls):
