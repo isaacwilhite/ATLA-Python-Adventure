@@ -79,8 +79,26 @@ class Player:
             #! function to move you back to a part on the map reset_location()
             click.echo("You have fainted! Your opponent was too strong.")
 
+    def faint(self):
+        self.health = 10 #reset health
+        #! reset_location()
+        #clear inventory(?)
+
     ##update database at checkpoint
     def update_db_with_health(self):
+        sql = """
+            UPDATE players
+            SET health = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.health, self.id))
+        CONN.commit()
 
     ##delete player from database
     def delete_player(self):
+        sql = """
+            DELETE FROM players
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
