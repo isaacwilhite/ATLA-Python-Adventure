@@ -7,7 +7,7 @@ class Abilities:
     def __init__(self, player_id, skill_id, id=None):
         self.player_id = player_id
         self.skill_id = skill_id
-        self.id = id
+        self.id = id #! recently added, check if code breaks
 
     @property
     def player_id(self):
