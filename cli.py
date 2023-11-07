@@ -45,6 +45,7 @@ def adventure(player):
     while True:
 
         click.echo("ATLA Menu:")
+        click.echo("2. Start Game")
         click.echo("1. Check Skills")
         click.echo("2. Check Health")
         click.echo("3. Quit Adventure")
@@ -52,17 +53,17 @@ def adventure(player):
         adventure_choice = click.prompt("Choose an option (1/2/3)", type=click.Choice(['1', '2', '3']))
 
         if adventure_choice == '1':
+            pass
+        if adventure_choice == '2':
             skills = Abilities.get_skills_for_player(player.id)
             click.echo(f"Your skills: {', '.join(skills)}")
-            # Implement skill check logic
-        elif adventure_choice == '2':
-            click.echo(f"Your Health: {player.health}")
-            # Implement health check logic
         elif adventure_choice == '3':
+            click.echo(f"Your Health: {player.health}")
+        elif adventure_choice == '4':
             click.echo("Returning to the Main Menu...")
             return  # Return to the main menu
         else:
-            click.echo("Invalid choice. Please enter '1', '2', or '3'.")
+            click.echo("Invalid choice. Please enter '1', '2', '3', or '4'.")
 
 
 if __name__ == "__main__":
