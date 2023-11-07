@@ -99,7 +99,7 @@ class Abilities:
         skill_list = []
         for skill_id in skill_ids:
             sql = """
-                SELECT name from skill WHERE id = ?
+                SELECT name from skills WHERE id = ?
             """
             CURSOR.execute(sql, (skill_id[0],))
             skill_name = CURSOR.fetchone()

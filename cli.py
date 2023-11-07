@@ -1,6 +1,7 @@
 import click
 import sys
 from classes.player import *
+from classes.abilities import *
 from helpers import (
     create_new_user,
     login_existing_user,
@@ -51,7 +52,8 @@ def adventure(player):
         adventure_choice = click.prompt("Choose an option (1/2/3)", type=click.Choice(['1', '2', '3']))
 
         if adventure_choice == '1':
-            pass
+            skills = Abilities.get_skills_for_player(player.id)
+            click.echo(f"Your skills: {', '.join(skills)}")
             # Implement skill check logic
         elif adventure_choice == '2':
             pass

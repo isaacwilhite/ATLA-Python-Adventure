@@ -7,7 +7,7 @@ CURSOR = CONN.cursor()
 class Player:
 
     def __init__(self, username="", health = 10, id=None):
-        self.username = username
+        self.username = username.lower()
         self.health = health
         self.id = id
 
@@ -67,7 +67,7 @@ class Player:
             WHERE username = ?
         """
         row = CURSOR.execute(sql, (username,)).fetchone()
-        return cls(row[1], row[0]) if row else None
+        return cls(row[1], row[2], row[0]) if row else None
 
     ##during game play decrease health
     def decrease_health(self, damage):
@@ -105,4 +105,4 @@ class Player:
             CONN.commit()
             print("succesful")
         except sqlite3.Error as e:
-            print('Error deleting player: {e}')
+            print(f'Error deleting player: {e}')
