@@ -24,7 +24,7 @@ def load_locations():
         locations.append(location)
     return locations
 
-def display_location(location):
+def display_location(location, locations):
     subprocess.run('clear' if os.name == 'posix' else 'cls', shell=True) 
     print(f"Location: {location.name}")
     print(f"Description: {location.description}")
@@ -36,20 +36,32 @@ def display_location(location):
 
 def main():
     map_instance = Map()
-    # Add connections between locations (same as in step 2)
     
+    # Add connections between locations
+    map_instance.add_connection(1, "North", 2)
+    map_instance.add_connection(3, "North", 2)
+    map_instance.add_connection(2, "South", 3)
+    map_instance.add_connection(4, "South", 3)
+    map_instance.add_connection(6, "East", 4)
+    map_instance.add_connection(3, "East", 4)
+    map_instance.add_connection(7, "West", 8)
+    map_instance.add_connection(9, "West", 8)
+    map_instance.add_connection(8, "Northeast", 9)
+    map_instance.add_connection(10, "Northeast", 9)
+    map_instance.add_connection(9, "Southeast", 10)
+
     locations = Location.load_locations(map_instance)
     current_location = locations[0]  # Assuming the starting location is the first in the list
 
     while True:
-        display_location(current_location)
+        display_location(current_location, locations)  # Pass 'locations' to the function
         direction = input("\nEnter the direction to move (q to quit): ").capitalize()
 
         if direction == 'Q':
             print("Exiting the map. Goodbye!")
             break
 
-        connected_location_id = map_instance.get_connected_location_id(current_location.id, direction)
+        connected_location_id = map_instance.get_connected_location_id(current_location.id, direction.capitalize())
         
         if connected_location_id is not None:
             current_location = next((loc for loc in locations if loc.id == connected_location_id), None)
@@ -58,6 +70,7 @@ def main():
                 break
         else:
             print("Error: Invalid direction. Please choose a valid direction.")
+
 
 if __name__ == "__main__":
     main()

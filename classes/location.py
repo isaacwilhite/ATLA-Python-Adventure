@@ -3,11 +3,17 @@ import sqlite3
 CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
+import sqlite3
+
+CONN = sqlite3.connect("database.db")
+CURSOR = CONN.cursor()
+
 class Location:
     def __init__(self, name, description, category, id=None):
         self._name = name
         self._description = description
         self.category = category
+        self.id = id
         self.directions = {}
 
     @property
@@ -74,6 +80,7 @@ class Location:
         rows = CURSOR.fetchall()
         for row in rows:
             location = cls(name=row[1], description=row[2], category=row[3], id=row[0])
+            print(f"Loading location: {location.id}, Directions: {map_instance.directions.get(location.id, {})}")
             location.directions = map_instance.directions.get(location.id, {})
             locations.append(location)
         return locations
