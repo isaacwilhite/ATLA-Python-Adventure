@@ -1,4 +1,5 @@
 import click
+import sys
 
 from helpers import exit_program
 
@@ -19,6 +20,8 @@ def user_prompt():
             login_existing_user()
         elif user_choice == 'no':
             create_new_user()
+        elif user_choice == 'quit': #checks to see if player wants to quit
+            check_quit()
         else:
             click.echo("Invalid choice. Please enter 'yes' or 'no'.")
 
@@ -29,10 +32,22 @@ def create_new_user():
     # Add code to handle user registration
 
 def login_existing_user(username):
+    username = click.prompt("Please input your username:", type=str).lower().strip()
+    #check if they wanna quit
+    check_quit(username)
+
+
+
     # Implement the logic to log in an existing user
     # You can prompt for the user's password or other login details
     click.echo(f"Welcome back, {username}! You can resume your journey as an Avatar.")
     # Add code to handle user login
+
+##exit function
+def check_quit(string):
+    if string.lower() == "quit":
+        click.echo("You have chosen to quit the game. What will we do without the Avatar! Please come back soon!")
+    sys.exit()
 
 if __name__ == "__main__":
     welcome()

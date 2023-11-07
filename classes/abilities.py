@@ -107,3 +107,7 @@ class Abilities:
                 skill_list.append(skill_name[0])
 
         return skill_list
+###Usage
+# player_id = 1  # Replace with the actual player's ID
+# skills = Abilities.get_skills_for_player(player_id)
+# print("Skills:", skills)

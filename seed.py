@@ -67,4 +67,4 @@ for data in skill_data:
 ##player data (more to see)
 # for data in player_data:
 #     username = data
-#     Player.create(username)
+#     Player.create_new_user(username)

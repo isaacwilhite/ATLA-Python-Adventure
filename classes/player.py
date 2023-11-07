@@ -52,7 +52,18 @@ class Player:
         CONN.commit()
 
     @classmethod
-    def create(cls, username, health):
+    def create_new_player(cls, username, health):
         player = cls(username, health)
         player.save()
         return player
+
+    ##find by username (used for login)
+    @classmethod
+    def find_by_username(cls, username):
+        sql = """
+            SELECT *
+            FROM players
+            WHERE username = ?
+        """
+        row = CURSOR.execute(sql, (username,)).fetchone()
+        return cls(row[0], row[1]) if row else None
