@@ -75,7 +75,7 @@ class Player:
         if self.health == 5:
             click.echo("You are weakening! Use all of the skills you have learned to defeat your opponent")
         elif self.health < 0:
-            self.health == 0
+            self.health = 0
             #! function to move you back to a part on the map reset_location()
             click.echo("You have fainted! Your opponent was too strong.")
 
