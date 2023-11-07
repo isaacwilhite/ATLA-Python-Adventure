@@ -4,18 +4,21 @@ from classes.player import Player
 from classes.opponent import Opponent
 from classes.nation import Nation
 from classes.skill import Skill
+from classes.abilities import Abilities
 
 #drop tables
 Player.drop_table()
 Opponent.drop_table()
 Nation.drop_table()
 Skill.drop_table()
+Abilities.drop_table()
 
 #create tables
 Player.create_table()
 Opponent.create_table()
 Nation.create_table()
 Skill.create_table()
+Abilities.create_table()
 
 #table data
 opponent_data = [
@@ -64,4 +67,4 @@ for data in skill_data:
 ##player data (more to see)
 # for data in player_data:
 #     username = data
-#     Player.create(username)
+#     Player.create_new_user(username)

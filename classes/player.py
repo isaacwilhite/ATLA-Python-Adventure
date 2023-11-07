@@ -1,8 +1,9 @@
+import click
 import sqlite3
 
 CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
-
+##remove player from database
 class Player:
 
     def __init__(self, username="", id=None):
@@ -52,7 +53,52 @@ class Player:
         CONN.commit()
 
     @classmethod
-    def create(cls, username, health):
+    def create_new_player(cls, username, health):
         player = cls(username, health)
         player.save()
         return player
+
+    ##find by username (used for login)
+    @classmethod
+    def find_by_username(cls, username):
+        sql = """
+            SELECT *
+            FROM players
+            WHERE username = ?
+        """
+        row = CURSOR.execute(sql, (username,)).fetchone()
+        return cls(row[0], row[1]) if row else None
+
+    ##during game play decrease health
+    def decrease_health(self, damage):
+        self.health -= damage
+        if self.health == 5:
+            click.echo("You are weakening! Use all of the skills you have learned to defeat your opponent")
+        elif self.health < 0:
+            self.health = 0
+            #! function to move you back to a part on the map reset_location()
+            click.echo("You have fainted! Your opponent was too strong.")
+
+    def faint(self):
+        self.health = 10 #reset health
+        #! reset_location()
+        #clear inventory(?)
+
+    ##update database at checkpoint
+    def update_db_with_health(self):
+        sql = """
+            UPDATE players
+            SET health = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.health, self.id))
+        CONN.commit()
+
+    ##delete player from database
+    def delete_player(self):
+        sql = """
+            DELETE FROM players
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
