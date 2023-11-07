@@ -4,10 +4,10 @@ CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
 class Abilities:
-    def __init__(self, player_id, skill_id):
+    def __init__(self, player_id, skill_id, id=None):
         self.player_id = player_id
         self.skill_id = skill_id
-        self.skills = []
+        self.id = id
 
     @property
     def player_id(self):
