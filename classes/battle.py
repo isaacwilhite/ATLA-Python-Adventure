@@ -70,3 +70,12 @@ class Battle():
         """
         CURSOR.execute(sql, (player_id, opponent_id, status))
         CONN.commit()
+
+    def update_battle_status(self, status):
+        sql = """
+            UPDATE battles
+            SET status = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (status,))
+        CONN.commit()
