@@ -7,7 +7,7 @@ CURSOR = CONN.cursor()
 class Player:
 
     def __init__(self, username="", health = 10, id=None):
-        self.username = username.lower()
+        self.username = username
         self.health = health
         self.id = id
 
@@ -53,8 +53,8 @@ class Player:
         CONN.commit()
 
     @classmethod
-    def create_new_player(cls, username):
-        player = cls(username)
+    def create_new_player(cls, username, health=10):
+        player = cls(username, health)
         player.save()
         return player
 
@@ -67,7 +67,7 @@ class Player:
             WHERE username = ?
         """
         row = CURSOR.execute(sql, (username,)).fetchone()
-        return cls(row[0], row[1]) if row else None
+        return cls(row[1], row[0]) if row else None
 
     ##during game play decrease health
     def decrease_health(self, damage):
@@ -96,9 +96,13 @@ class Player:
 
     ##delete player from database
     def delete_player(self):
-        sql = """
-            DELETE FROM players
-            WHERE id = ?
-        """
-        CURSOR.execute(sql, (self.id,))
-        CONN.commit()
+        try:
+            sql = """
+                DELETE FROM players
+                WHERE username = ?
+            """
+            CURSOR.execute(sql, (self.username,))
+            CONN.commit()
+            print("succesful")
+        except sqlite3.Error as e:
+            print('Error deleting player: {e}')
