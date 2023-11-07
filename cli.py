@@ -45,14 +45,15 @@ def adventure(player):
     while True:
 
         click.echo("ATLA Menu:")
-        click.echo("2. Start Game")
-        click.echo("1. Check Skills")
-        click.echo("2. Check Health")
-        click.echo("3. Quit Adventure")
+        click.echo("1. Start Game")
+        click.echo("2. Check Skills")
+        click.echo("3. Check Health")
+        click.echo("4. Quit Adventure")
 
-        adventure_choice = click.prompt("Choose an option (1/2/3)", type=click.Choice(['1', '2', '3']))
+        adventure_choice = click.prompt("Choose an option (1/2/3/4)", type=click.Choice(['1', '2', '3', '4']))
 
         if adventure_choice == '1':
+            #!map /battle logic
             pass
         if adventure_choice == '2':
             skills = Abilities.get_skills_for_player(player.id)
