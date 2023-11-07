@@ -35,7 +35,7 @@ class Abilities:
             CREATE TABLE IF NOT EXISTS abilities (
                 id INTEGER PRIMARY KEY,
                 player_id INTEGER,
-                skill_id INTEGER
+                skill_id INTEGER,
                 FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE,
                 FOREIGN KEY (skill_id) REFERENCES skills(id)
             )

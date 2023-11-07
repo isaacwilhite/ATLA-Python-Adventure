@@ -6,9 +6,9 @@ CURSOR = CONN.cursor()
 ##remove player from database
 class Player:
 
-    def __init__(self, username="", id=None):
+    def __init__(self, username="", health = 10, id=None):
         self.username = username.lower()
-        self.health = 10
+        self.health = health
         self.id = id
 
     @property
@@ -20,8 +20,8 @@ class Player:
             raise TypeError("Username must be a string")
         elif len(new_user) not in range(1, 11):
             raise Exception("Username should be between 1 and 10 characters")
-        elif not hasattr(self, "username"):
-            raise Exception("Username cannot be reset")
+        # elif not hasattr(self, "username"):
+        #     raise Exception("Username cannot be reset")
         else:
             self._username = new_user
 
@@ -47,14 +47,14 @@ class Player:
     def save(self):
         sql = """
             INSERT INTO players (username, health)
-            VALUES (?, ?, ?)
+            VALUES (?, ?)
         """
         CURSOR.execute(sql, (self.username, self.health))
         CONN.commit()
 
     @classmethod
-    def create_new_player(cls, username, health):
-        player = cls(username, health)
+    def create_new_player(cls, username):
+        player = cls(username)
         player.save()
         return player
 
