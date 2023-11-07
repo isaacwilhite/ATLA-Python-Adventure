@@ -54,7 +54,7 @@ def main():
     current_location = locations[0]  # Assuming the starting location is the first in the list
 
     while True:
-        display_location(current_location, locations)  # Pass 'locations' to the function
+        display_location(current_location, locations)
         direction = input("\nEnter the direction to move (q to quit): ").capitalize()
 
         if direction == 'Q':
