@@ -56,7 +56,7 @@ def adventure(player):
             click.echo(f"Your skills: {', '.join(skills)}")
             # Implement skill check logic
         elif adventure_choice == '2':
-            pass
+            click.echo(f"Your Health: {player.health}")
             # Implement health check logic
         elif adventure_choice == '3':
             click.echo("Returning to the Main Menu...")
