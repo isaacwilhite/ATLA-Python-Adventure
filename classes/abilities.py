@@ -36,7 +36,7 @@ class Abilities:
                 id INTEGER PRIMARY KEY,
                 player_id INTEGER,
                 skill_id INTEGER
-                FOREIGN KEY (player_id) REFERENCES player(id),
+                FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE,
                 FOREIGN KEY (skill_id) REFERENCES skill(id)
             )
         """

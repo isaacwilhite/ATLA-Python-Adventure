@@ -73,8 +73,7 @@ def remove_player_from_db():
         if player:
             confirm = click.prompt("Are you sure you want to delete your player? The four nations need your help! (yes/no)", type=click.Choice(['yes', 'no']))
             if confirm == 'yes':
-                player.delete_player()
-                #!insert function to delete all plyer.id instances from abilities.py
+                player.delete_player() #removes player from db and cascades removal of abilities
                 click.echo("Player data deleted sucessfully")
             elif confirm == "no":
                 click.echo("Player data was not deleted")
