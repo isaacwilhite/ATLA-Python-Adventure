@@ -1,8 +1,13 @@
 import click
 import sys
 from classes.player import *
-
-from helpers import exit_program
+from classes.abilities import *
+from helpers import (
+    create_new_user,
+    login_existing_user,
+    remove_player_from_db,
+    check_quit
+)
 
 def welcome():
     file_path = 'txt/intro.txt'
@@ -12,64 +17,56 @@ def welcome():
         print(content)
 ##prompt user for a choice
 
-def user_prompt():
-    click.echo("Are you a returning user? (yes/no)")
-
+def main_menu():
     while True:
-        user_choice = click.prompt("Your choice", type=click.Choice(['yes', 'no']))
-        if user_choice == 'yes':
-            return login_existing_user()
-        elif user_choice == 'no':
-            return create_new_user()
-        elif user_choice == 'quit': #checks to see if player wants to quit
-            check_quit()
-        else:
-            click.echo("Invalid choice. Please enter 'yes' or 'no'.")
+        click.echo("Main Menu:")
+        click.echo("1. Start a New Game")
+        click.echo("2. Load a Saved Game")
+        click.echo("3. Remove Player")
+        click.echo("4. Quit")
+        choice = click.prompt("Choose an option)", type=click.Choice(['1', '2', '3', '4']))
 
-def create_new_user():
-    click.echo("Welcome, new Avatar! You can create your username now.")
-    username = click.prompt("Please input your username:", type=str).lower().strip()
-    if username == 'quit':
-        check_quit(username)
-
-    existing_player = Player.find_by_username(username)
-    if existing_player:
-        click.echo("User already exists. Would you like to log in instead? (yes/no)")
-        while True:
-            choice = click.prompt("Log in instead?", type=click.Choice(['yes', 'no']))
-            if choice == 'yes':
-                return login_existing_user()
-            elif choice == 'no':
-                click.echo("Please choose a different username")
-            elif choice == "quit":
-                check_quit(choice)
-            else:
-                click.echo("Invalid choice. Please enter 'yes' or 'no'.")
-    else:
-        new_player = Player(username=username)
-        new_player.save()
-        return new_player
-
-def login_existing_user(username):
-    while True:
-        username = click.prompt("Please input your username:", type=str).lower().strip()
-        #check if they wanna quit
-        if username == 'quit':
-            check_quit(username)
+        if choice == '1':
+            player = create_new_user()
+            adventure(player)
+            break
+        elif choice == '2':
+            player = login_existing_user()
+            adventure(player)
+        elif choice == '3':
+            remove_player_from_db()
+        elif choice == '4':
+            check_quit("quit")
             return
-        existing_player = Player.find_by_username(username)
-        if existing_player:
-            click.echo(f"Welcome back, {username}! You can resume your journey as an Avatar.")
-            return existing_player
         else:
-            click.echo("We cannot find your username. Please try again or type 'quit' to exit.")
+            click.echo("Invalid choice. Please enter '1', '2', '3', or '4'.")
 
-##exit function
-def check_quit(string):
-    if string.lower() == "quit":
-        click.echo("You have chosen to quit the game. What will we do without the Avatar! Please come back soon!")
-    sys.exit()
+def adventure(player):
+    while True:
+
+        click.echo("ATLA Menu:")
+        click.echo("1. Start Game")
+        click.echo("2. Check Skills")
+        click.echo("3. Check Health")
+        click.echo("4. Quit Adventure")
+
+        adventure_choice = click.prompt("Choose an option (1/2/3/4)", type=click.Choice(['1', '2', '3', '4']))
+
+        if adventure_choice == '1':
+            #!map /battle logic
+            pass
+        if adventure_choice == '2':
+            skills = Abilities.get_skills_for_player(player.id)
+            click.echo(f"Your skills: {', '.join(skills)}")
+        elif adventure_choice == '3':
+            click.echo(f"Your Health: {player.health}")
+        elif adventure_choice == '4':
+            click.echo("Returning to the Main Menu...")
+            return  # Return to the main menu
+        else:
+            click.echo("Invalid choice. Please enter '1', '2', '3', or '4'.")
+
 
 if __name__ == "__main__":
     welcome()
-    user_prompt()
+    main_menu()

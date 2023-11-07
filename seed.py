@@ -44,12 +44,17 @@ skill_data = [
     ("air glide", "glide through the air using bending", 15, "air")
 ]
 
-# player_data = [
-#     ("Tiana"),
-#     ("Isaac"),
-#     ("Michael")
-# ]
+player_data = [
+    ("tiana"),
+    ("isaac"),
+    ("michael")
+]
 
+abilities_data = [
+    (1, 1),
+    (1, 2),
+    (1, 3)
+]
 #create instances
 
 ##opponent
@@ -65,6 +70,10 @@ for data in skill_data:
     name, description, point_cost, category = data
     Skill.create(name, description, point_cost, category)
 ##player data (more to see)
-# for data in player_data:
-#     username = data
-#     Player.create_new_user(username)
+for data in player_data:
+    username = data
+    Player.create_new_player(username)
+##abilities
+for data in abilities_data:
+    player_id, skill_id = data
+    Abilities.create_db_instance(player_id, skill_id)

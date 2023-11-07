@@ -4,10 +4,10 @@ CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
 class Abilities:
-    def __init__(self, player_id, skill_id):
+    def __init__(self, player_id, skill_id, id=None):
         self.player_id = player_id
         self.skill_id = skill_id
-        self.skills = []
+        self.id = id #! recently added, check if code breaks
 
     @property
     def player_id(self):
@@ -35,9 +35,9 @@ class Abilities:
             CREATE TABLE IF NOT EXISTS abilities (
                 id INTEGER PRIMARY KEY,
                 player_id INTEGER,
-                skill_id INTEGER
-                FOREIGN KEY (player_id) REFERENCES player(id),
-                FOREIGN KEY (skill_id) REFERENCES skill(id)
+                skill_id INTEGER,
+                FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE,
+                FOREIGN KEY (skill_id) REFERENCES skills(id)
             )
         """
         CURSOR.execute(sql)
@@ -99,7 +99,7 @@ class Abilities:
         skill_list = []
         for skill_id in skill_ids:
             sql = """
-                SELECT name from skill WHERE id = ?
+                SELECT name from skills WHERE id = ?
             """
             CURSOR.execute(sql, (skill_id[0],))
             skill_name = CURSOR.fetchone()
@@ -107,6 +107,16 @@ class Abilities:
                 skill_list.append(skill_name[0])
 
         return skill_list
+
+##helper function (satisfy CRUD)
+def correct_input_error(self, new_player_id, new_skill_id):
+    sql = """
+        UPDATE abilities
+        SET player_id = ?, skill_id = ?
+        WHERE id = ?
+    """
+    CURSOR.execute(sql, (new_player_id, new_skill_id, self.id))
+    CONN.commit()
 ###Usage
 # player_id = 1  # Replace with the actual player's ID
 # skills = Abilities.get_skills_for_player(player_id)
