@@ -64,6 +64,26 @@ def login_existing_user(username):
         else:
             click.echo("We cannot find your username. Please try again or type 'quit' to exit.")
 
+##delete player from database
+def remove_player_from_db():
+    username = click.prompt("Please input your username to delete your player:", type=str).lower().strip()
+    player = Player.find_by_username(username)
+
+    while True:
+        if player:
+            confirm = click.prompt("Are you sure you want to delete your player? The four nations need your help! (yes/no)", type=click.Choice(['yes', 'no']))
+            if confirm == 'yes':
+                player.delete_player()
+                #!insert function to delete all plyer.id instances from abilities.py
+                click.echo("Player data deleted sucessfully")
+            elif confirm == "no":
+                click.echo("Player data was not deleted")
+                #! type in menu to navigate back to the game (potential function)
+            else:
+                click.echo("Invalid choice. Please enter 'yes' or 'no'.")
+        else:
+            click.echo("Player not found. Please check your username.")
+
 ##exit function
 def check_quit(string):
     if string.lower() == "quit":
