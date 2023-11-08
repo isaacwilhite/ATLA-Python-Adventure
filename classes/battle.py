@@ -18,7 +18,7 @@ class Battle():
         available_opponents = self.available_opponents(map_location, player)
 
         #!Battle Loop
-        #no loop needed, only put in one opponent
+        #!no loop needed, only put in one opponent
         for opponent in available_opponents:
             battle_result = self.battle(player, opponent)
 
@@ -30,10 +30,15 @@ class Battle():
                     # Abilities.create_db_instance(player.id, place_holder)
                     #~add new skill to Abilities Class (existing function)
                     #! think about how to dynamically change the skill_id you want to add
-                except:
-                    raise Exception("Unable to update database")
+                except Exception as e:
+                    print(f"An error occurred: {str(e)}")
 
             elif battle_result == "lose":
+                try:
+                    self.update_battle_status(1)
+                except Exception as e:
+                    print(f"An error occurred: {str(e)}")
+
                 from player import Player
                 player.faint()
                 #!reset location
@@ -53,7 +58,6 @@ class Battle():
         while opponent.health > 0 and player.health > 0:
             hint_skill = random.choice(opponent_solution)
 
-            from player import Player
             available_skills = player.get_all_skill_data_by_category(category)
             skill_info = next((skill for skill in available_skills if skill[0] == hint_skill), None)
 
@@ -69,11 +73,11 @@ class Battle():
 
             battle_result = self.perform_battle(available_skills, hint_skill)
 
-            if battle_result == "win":
+            if battle_result == "win move":
                 opponent.health -= skill_point_cost
                 click.echo(f"You've hit the opponent with {skill_name}!")
                 opponent_solution.remove(hint_skill)
-            elif battle_result == "lose":
+            elif battle_result == "lose move":
                 player.decrease_health(1)
                 click.echo(f"The opponent has hit you! Your health is now {player.health}.")
             elif battle_result == "retreat":
@@ -110,14 +114,12 @@ class Battle():
             elif skill_choice.isdigit() and 1 <= int(skill_choice) <= len(available_skills):
                 chosen_skill = available_skills[int(skill_choice) - 1]
                 if chosen_skill == opponent_solution:
-                    return "win"
+                    return "win move"
                 else:
-                    return "lose"
+                    return "lose move"
             else:
                 click.echo("Invalid input. Please select an appropriate choice.")
 #!automatic checkpoint function
-#!checkpoint in map menu#!split on ", " and if this in player.skills
-#!iterate aovera all of the abilities they have
     #~~~~~~~~~~~~~~~~~~~~~~CRUD~~~~~~~~~~~~~~~~~~~
     @classmethod
     def create_table(cls):
