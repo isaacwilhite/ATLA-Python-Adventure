@@ -108,16 +108,15 @@ class Abilities:
 
         return skill_list
 ##association method
-@classmethod
 def all(cls):
     sql = """
-        SELECT a.player_id, a.skill_id, s.name
+        SELECT a.player_id, s.name, s.description, s.point_cost
         FROM abilities a
         JOIN skills s ON a.skill_id = s.id
     """
     CURSOR.execute(sql)
     records = CURSOR.fetchall()
-    return [(record[0], record[2]) for record in records]
+    return records
 
 ##helper function (satisfy CRUD)
 def correct_input_error(self, new_player_id, new_skill_id):

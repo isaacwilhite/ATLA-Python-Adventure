@@ -109,9 +109,18 @@ class Player:
 
 ##association methods
     def player_skills(self):
-        #return a list of skills associated with the player
+        # Return a list of skills associated with the player
         from abilities import Abilities
-        return [record[1] for record in Abilities.all() if record[0] == self.id]
+        all_skills = Abilities.all()
+        player_skills = [record[1] for record in all_skills if record[0] == self.id]
+        return player_skills
+
+    def get_all_skill_data_by_category(self, category):
+    # Return a list of tuples with (name, description, point_cost) for skills associated with the player if category matches
+        from abilities import Abilities
+        all_skills = Abilities.all()
+        skill_data = [(record[1], self.get_skill_description(record[1]), self.get_skill_point_cost(record[1])) for record in all_skills if record[0] == self.id and record[3] == category]
+        return skill_data
 
     def defeated_opponents(self):
         #return list of opponents if player_id matches in opponent and status is 1
