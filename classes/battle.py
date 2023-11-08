@@ -10,7 +10,7 @@ class Battle():
         self.challenge_id = challenge_id
         self.status = status
         self.id = id
-
+#!if the status is 0 then just have a value
     def start_battle(self, player, map_location):
         #what opponents are available at that location
         available_opponents = self.available_opponents(map_location, player)
@@ -21,8 +21,9 @@ class Battle():
             battle_result = self.battle(player, opponent)
 
             if battle_result == "win":
-                #!update status to win in db
-                #~add new skill to Abilities Class (existing function)
+                #!try update status
+                    #!update status to win in db
+                    #~add new skill to Abilities Class (existing function)
 
             elif battle_result == "lose":
                 from player import Player
@@ -41,7 +42,8 @@ class Battle():
         #! battle logic, take turns, return "win", "lose", "retreat"
         pass
 #!automatic checkpoint function
-#!checkpoint in map menu
+#!checkpoint in map menu#!split on ", " and if this in player.skills
+#!iterate aovera all of the abilities they have
     #~~~~~~~~~~~~~~~~~~~~~~CRUD~~~~~~~~~~~~~~~~~~~
     @classmethod
     def create_table(cls):
@@ -58,6 +60,7 @@ class Battle():
         CURSOR.execute(sql)
         CONN.commit()
 
+    @c la s s me t ho d
     def drop_table(cls):
         sql = """
             DROP TABLE IF EXISTS battles
@@ -79,5 +82,5 @@ class Battle():
             SET status = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (status,))
+        CURSOR.execute(sql, (status, self.id))
         CONN.commit()

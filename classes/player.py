@@ -106,3 +106,18 @@ class Player:
             print("succesful")
         except sqlite3.Error as e:
             print(f'Error deleting player: {e}')
+
+##association methods
+    def player_skills(self):
+        #return a list of skills associated with the player
+        from abilities import Abilities
+        return [record[1] for record in Abilities.all() if record[0] == self.id]
+
+    def defeated_opponents(self):
+        #return list of opponents if player_id matches in opponent and status is 1
+        from battle import Battle
+
+    #!association method, select abilities where player id
+        #!player_abilities()
+        #!so the player knows what they have in ability
+        #!player has defeated which opponents
