@@ -6,12 +6,16 @@ CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
 class Battle():
-    def __init__(self, player_id, opponent_id, challenge_id, status, id=None):
+    def __init__(self, player_id, opponent_id, challenge_id, status=0, id=None):
         self.player_id = player_id
         self.opponent_id = opponent_id
         self.challenge_id = challenge_id
         self.status = status
         self.id = id
+
+#!must add properties to the different attributes
+
+
 #!if the status is 0 then just have a value
     def start_battle(self, player, map_location):
         #what opponents are available at that location
@@ -31,13 +35,13 @@ class Battle():
                     #~add new skill to Abilities Class (existing function)
                     #! think about how to dynamically change the skill_id you want to add
                 except Exception as e:
-                    print(f"An error occurred: {str(e)}")
+                    print(f"An error occurred while updating the database: {str(e)}")
 
             elif battle_result == "lose":
                 try:
-                    self.update_battle_status(1)
+                    self.update_battle_status(0)
                 except Exception as e:
-                    print(f"An error occurred: {str(e)}")
+                    print(f"An error occurred while updating the database: {str(e)}")
 
                 from player import Player
                 player.faint()
@@ -66,7 +70,6 @@ class Battle():
                 break
 
             skill_name, skill_description, skill_point_cost = skill_info
-            skill_choice = skill_name  # The player directly uses the skill
 
             hint_description = skill_info[1]  # Description of the matching skill
             click.echo(f"I think you may need something that will {hint_description}.")
