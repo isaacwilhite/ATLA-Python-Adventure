@@ -95,12 +95,9 @@ class Location:
 
     #~~~~~~~~~associations
     def retrieve_opponent(self):
-        sql = """
-            SELECT o.id, o.name, o.dialogue, o.health, o.solution
-            FROM opponents o
-            WHERE o.location_id = ?
-        """
-        opponent_data = CURSOR.execute(sql, (self.id,)).fetchone()
-        CONN.commit()
         from classes.opponent import Opponent
-        return Opponent(*opponent_data) if opponent_data else None
+        opponents = Opponent.all()
+        for opponent in opponents:
+            if opponent.location_id == self.id:
+                return opponent
+        return None

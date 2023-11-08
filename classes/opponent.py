@@ -5,31 +5,45 @@ CURSOR = CONN.cursor()
 
 class Opponent:
     def __init__(self, name, dialogue, solution, health, location_id, id=None):
-        self.name = name
-        self.dialogue = dialogue
-        self.solution = solution #add properties
-        self.health = health #add properties
-        self.location_id = location_id #add properties
+        self._name = name
+        self._dialogue = dialogue
+        self._solution = solution  # Added this line
+        self.health = health
+        self.location_id = location_id
+        self.id = id
 
     @property
     def name(self):
         return self._name
+    
     @name.setter
     def name(self, new_name):
-        if isinstance(new_name, str) and not hasattr(self, 'name'):
+        if isinstance(new_name, str) and not hasattr(self, '_name'):
             self._name = new_name
         else:
-            raise Exception("Name must be string and cannot be reset")
+            raise ValueError("Name must be a string and cannot be reset")
 
     @property
     def dialogue(self):
         return self._dialogue
+    
     @dialogue.setter
     def dialogue(self, new_dialogue):
-        if isinstance(new_dialogue, str) and not hasattr(self, 'dialogue'):
+        if isinstance(new_dialogue, str) and not hasattr(self, '_dialogue'):
             self._dialogue = new_dialogue
         else:
-            raise Exception("Dialogue must be string and cannot be reset")
+            raise ValueError("Dialogue must be a string and cannot be reset")
+
+    @property
+    def solution(self):
+        return self._solution
+    
+    @solution.setter
+    def solution(self, new_solution):
+        if isinstance(new_solution, str) and not hasattr(self, '_solution'):
+            self._solution = new_solution
+        else:
+            raise ValueError("Solution must be a string and cannot be reset")
 
     @classmethod
     def create_table(cls):
@@ -66,3 +80,13 @@ class Opponent:
         opponent = cls(name, dialogue, solution, health, location_id)
         opponent.save()
         return opponent
+
+    @classmethod
+    def all(cls):
+        sql = """
+            SELECT *
+            FROM opponents
+        """
+        opponents_data = CURSOR.execute(sql).fetchall()
+        CONN.commit()
+        return [cls(*data) for data in opponents_data]

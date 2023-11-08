@@ -74,6 +74,7 @@ def adventure(player):
             click.echo("Invalid choice. Please enter '1', '2', '3', or '4'.")
 
 def enter_map(player):
+    print("Debug: Inside enter_map function")
     map_instance = Map()
 
     # Add connections between locations
@@ -96,55 +97,86 @@ def enter_map(player):
 
 
     while True:
+        click.echo("Debug: Inside the while loop")
         display_location(current_location, locations)
-        direction = input("\nEnter the direction to move (q to quit): ").capitalize()
+        direction = input("\nEnter the direction to move (q to quit): ").capitalize().upper()
 
         if direction == 'Q':
             print("Exiting the map. Goodbye!")
             return
 
-        connected_location_id = map_instance.get_connected_location_id(current_location.id, direction.capitalize())
+        click.echo(f"Debug: Direction entered: {direction}")
+
+        if direction == 'Q':
+            print("Exiting the map. Goodbye!")
+            return
+
+        click.echo(f"Debug: Direction entered: {direction}")
+
+        connected_location_id = map_instance.get_connected_location_id(current_location.id, direction)
+
+        click.echo(f"Debug: Connected Location ID: {connected_location_id}")
 
         if connected_location_id is not None:
-            #!new location???
             new_location = next((loc for loc in locations if loc.id == connected_location_id), None)
             opponent_at_location = new_location.retrieve_opponent()
             current_category = new_location.retrieve_category()
 
+            click.echo(f"Debug: Opponent at location: {opponent_at_location}")
+            click.echo(f"Debug: Current category: {current_category}")
+
             if opponent_at_location is not None:
-                #!check if there is an existing battle record
+                click.echo("Debug: Opponent found at the new location")
+
+                # Check for existing battle record
                 existing_battle_records = Battle.all_battles()
+                click.echo(f"Debug: Existing battle records: {existing_battle_records}")
+
                 for battle_record in existing_battle_records:
+                    click.echo(f"Debug: Checking battle record: {battle_record}")
+
                     if battle_record.player_id == player.id and battle_record.opponent_id == opponent_at_location.id:
+                        click.echo(f"Debug: Found matching battle record: {battle_record}")
+
                         if battle_record.status == 0:
+                            click.echo("Debug: Existing battle record found with status 0")
+
                             battle = Battle.get_battle_by_id(battle_record.id)
+                            click.echo(f"Debug: Initiating battle with ID: {battle_record.id}")
                             battle_outcome = battle.start_battle(player, opponent_at_location, current_category)
 
-                            #!check outcome of battle
-                            if battle.outcome == "win":
+                            # Check outcome of battle
+                            click.echo(f"Debug: Battle outcome: {battle_outcome}")
+
+                            if battle_outcome == "win":
                                 click.echo("Congratulations! You won the battle.")
-                                #!move to new location
+                                # Move to new location
                                 current_location = new_location
                             elif battle_outcome == "retreat":
                                 click.echo("You retreated from the battle")
                                 break
                 else:
-                    #!no existing battle record
+                    # No existing battle record
+                    print("Debug: No existing battle record found")
                     new_battle = Battle(player.id, opponent_at_location.id)
-                    #!add battle record to database
+                    print("Debug: Creating a new battle record")
+                    # Add battle record to the database
                     new_battle.add_battle(player.id, opponent_at_location, 0)
-                    #!start the battle
+                    # Start the battle
                     battle_outcome = new_battle.start_battle(player, opponent_at_location, current_category)
-                    #!check outcome of battle
-                    if battle.outcome == "win":
+                    # Check outcome of battle
+                    print(f"Debug: Battle outcome: {battle_outcome}")
+
+                    if battle_outcome == "win":
                         click.echo("Congratulations! You won the battle.")
-                        #!move to new location
+                        # Move to new location
                         current_location = new_location
                     elif battle_outcome == "retreat":
                         click.echo("You retreated from the battle")
                         break
             else:
-                #!no opponent at the new location, move to new location
+                # No opponent at the new location, move to new location
+                print("Debug: No opponent at the new location")
                 click.echo("Continue exploring to find an opponent")
                 current_location = new_location
 
