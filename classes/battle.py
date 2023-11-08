@@ -18,10 +18,10 @@ class Battle():
         battle_result = self.battle(player, opponent, category)
 
         if battle_result == "win":
-            click.echo("Congratulations! You are one step closer to mastering all four elements! Proceed to the next step to continue your journey in becoming the Avatar.")
+            click.echo("You are one step closer to mastering all four elements! Proceed to the next step to continue your journey in becoming the Avatar.")
             try:
                 self.update_battle_status(1)
-                from abilities import Abilities
+                from classes.abilities import Abilities
                 # Abilities.create_db_instance(player.id, place_holder)
                 #~add new skill to Abilities Class (existing function)
                 #! think about how to dynamically change the skill_id you want to add
@@ -43,16 +43,16 @@ class Battle():
             return "retreat"
 
     def battle(self, player, opponent, category):
-        opponent_solution = [skill.strip() for skill in opponent.solution.split(', ')]
+        opponent_solution = [skill.strip() for skill in opponent.solution.split(',')]
         click.echo(opponent.dialogue)
 
         while opponent.health > 0 and player.health > 0:
             hint_skill = random.choice(opponent_solution)
 
             available_skills = player.get_all_skill_data_by_category(category)
-            print(available_skills)
+            print(f"DEBUG: {available_skills}")
             skill_info = next((skill for skill in available_skills if skill[0] == hint_skill), None)
-
+            print(f"DEBUG: {skill_info}")
             if skill_info is None:
                 click.echo("You don't have any skills to use!")
                 break
@@ -60,7 +60,7 @@ class Battle():
             skill_name, skill_description, skill_point_cost = skill_info
 
             hint_description = skill_info[1]  # Description of the matching skill
-            click.echo(f"I think you may need something that will {hint_description}.")
+            click.echo(f"I think you may need a {hint_description}.")
 
             battle_result = self.perform_battle(available_skills, hint_skill)
 
@@ -82,19 +82,23 @@ class Battle():
             click.echo(f"You've been defeated by {opponent.name}. Better luck next time!")
             return "lose"
 
-    def get_player_skill_choice(self, available_skills):
-        skill_menu = {str(i + 1): skill for i, skill in enumerate(available_skills)}
-        click.echo("Choose a skill to use:")
-        return click.prompt(menu=skill_menu, type=click.Choice(skill_menu.keys()))
+    # def get_player_skill_choice(self, available_skills):
+    #     skill_menu = {str(i + 1): skill for i, skill in enumerate(available_skills)}
+    #     click.echo("Choose a skill to use:")
+    #     return click.prompt(menu=skill_menu, type=click.Choice(skill_menu.keys()))
 
     #~ handles every move that a player makes
     def perform_battle(self, available_skills, opponent_solution):
+        for skill_info in available_skills:
+            skill_name, skill_description, skill_point_cost = skill_info
+
         while True:
             skill_menu = {str(i + 1): skill[0] for i, skill in enumerate(available_skills)}
             skill_menu[str(len(available_skills) + 1)] = 'retreat'
 
             click.echo("Which move do you want to use?")
-            for i, skill_name in enumerate(available_skills):
+            for i, skill_info in enumerate(available_skills):
+                skill_name, _, _ = skill_info  # Unpack only the skill name
                 click.echo(f"{i + 1}. {skill_name}")
 
             skill_choice = click.prompt("Select a move", type=click.Choice(skill_menu.keys()))
@@ -103,7 +107,8 @@ class Battle():
                 return "retreat"
 
             elif skill_choice.isdigit() and 1 <= int(skill_choice) <= len(available_skills):
-                chosen_skill = available_skills[int(skill_choice) - 1]
+                chosen_skill = available_skills[int(skill_choice) - 1][0]
+                print(f"DEBUG: {chosen_skill}")
                 if chosen_skill == opponent_solution:
                     return "win move"
                 else:
@@ -135,7 +140,7 @@ class Battle():
         CURSOR.execute(sql)
         CONN.commit()
 
-    def add_battle(self, player_id, opponent_id, status):
+    def add_battle(self, player_id, opponent_id, status=0):
         sql = """
             INSERT INTO battles (player_id, opponent_id, status)
             VALUES (?, ?, ?)
@@ -149,8 +154,11 @@ class Battle():
             SET status = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (status, self.id))
-        CONN.commit()
+        try:
+            CURSOR.execute(sql, (status, self.id))
+            CONN.commit()
+        except Exception as e:
+            print(f"An error occurred while updating the database: {str(e)}")
 
 #!returns list of all battle instances
     @classmethod
