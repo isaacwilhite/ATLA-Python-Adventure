@@ -95,6 +95,10 @@ def move(self, direction):
     else:
         print(f"There is no connection {direction} from your current location.")
 
+def __init__(self, map_instance):
+        self.map_instance = map_instance
+        self.current_location_id = 1  # Assuming starting location ID is 1
+
 ##exit function
 def check_quit(string):
     if string.lower() == "quit":
