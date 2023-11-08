@@ -111,7 +111,7 @@ class Abilities:
     @classmethod
     def all(cls):
         sql = """
-            SELECT a.player_id, s.name, s.description, s.point_cost
+            SELECT a.player_id, s.name, s.description, s.point_cost, s.category
             FROM abilities a
             JOIN skills s ON a.skill_id = s.id
         """

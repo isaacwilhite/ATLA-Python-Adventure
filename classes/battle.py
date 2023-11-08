@@ -43,13 +43,14 @@ class Battle():
             return "retreat"
 
     def battle(self, player, opponent, category):
-        opponent_solution = [skill.strip() for skill in opponent.solution.split(',')]
+        opponent_solution = [skill.strip() for skill in opponent.solution.split(', ')]
         click.echo(opponent.dialogue)
 
         while opponent.health > 0 and player.health > 0:
             hint_skill = random.choice(opponent_solution)
 
             available_skills = player.get_all_skill_data_by_category(category)
+            print(available_skills)
             skill_info = next((skill for skill in available_skills if skill[0] == hint_skill), None)
 
             if skill_info is None:

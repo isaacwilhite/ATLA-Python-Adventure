@@ -89,4 +89,4 @@ class Opponent:
         """
         opponents_data = CURSOR.execute(sql).fetchall()
         CONN.commit()
-        return [cls(*data) for data in opponents_data]
+        return [cls(data[1], data[2], data[3], data[4], data[5], data[0]) for data in opponents_data]

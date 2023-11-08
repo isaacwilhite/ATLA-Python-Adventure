@@ -75,7 +75,7 @@ def load_locations():
     return locations
 
 def display_location(location, locations):
-    subprocess.run('clear' if os.name == 'posix' else 'cls', shell=True)
+    # subprocess.run('clear' if os.name == 'posix' else 'cls', shell=True)
     print(f"Location: {location.name}")
     print(f"Description: {location.description}")
     print(f"Category: {location.category}")

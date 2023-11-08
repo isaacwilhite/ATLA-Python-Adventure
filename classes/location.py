@@ -90,14 +90,34 @@ class Location:
             SELECT category FROM locations
             WHERE id = ?
         """
-        category = CURSOR.execute(sql, (self.id,)).fetchone()
-        return category
+        category_list = CURSOR.execute(sql, (self.id,)).fetchone()
+        return category_list[0] if category_list else None
 
     #~~~~~~~~~associations
     def retrieve_opponent(self):
         from classes.opponent import Opponent
         opponents = Opponent.all()
+        # import ipdb; ipdb.set_trace()
         for opponent in opponents:
             if opponent.location_id == self.id:
                 return opponent
         return None
+# from map import Map
+# map_instance = Map()
+
+# map_instance.add_connection(1, "West", 2)
+# map_instance.add_connection(2, "East", 3)
+# map_instance.add_connection(3, "South", 4)
+# map_instance.add_connection(4, "Southeast", 11)
+# map_instance.add_connection(11, "South", 13)
+# map_instance.add_connection(13, "North", 12)
+# map_instance.add_connection(12, "Southeast", 14)
+# map_instance.add_connection(14, "North", 7)
+# map_instance.add_connection(7, "Northeast", 10)
+# map_instance.add_connection(10, "Southwest", 9)
+# map_instance.add_connection(9, "North", 8)
+# map_instance.add_connection(8, "West", 15)
+
+# locations = Location.load_locations(map_instance)
+# current_location = locations[0]
+# current_location.retrieve_opponent()
