@@ -5,6 +5,7 @@ from classes.opponent import Opponent
 from classes.location import Location
 from classes.skill import Skill
 from classes.abilities import Abilities
+from classes.battle import Battle
 
 #drop tables
 Player.drop_table()
@@ -12,6 +13,7 @@ Opponent.drop_table()
 Location.drop_table()
 Skill.drop_table()
 Abilities.drop_table()
+Battle.drop_table()
 
 #create tables
 Player.create_table()
@@ -19,6 +21,7 @@ Opponent.create_table()
 Location.create_table()
 Skill.create_table()
 Abilities.create_table()
+Battle.create_table()
 
 #table data
 opponent_data = [

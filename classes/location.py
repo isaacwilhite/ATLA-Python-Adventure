@@ -88,7 +88,7 @@ class Location:
     def retrieve_category(self):
         sql = """
             SELECT category FROM locations
-            WHERE location_id = ?
+            WHERE id = ?
         """
         category = CURSOR.execute(sql, (self.id,)).fetchone()
         return category
@@ -100,6 +100,7 @@ class Location:
             FROM opponents o
             WHERE o.location_id = ?
         """
-        opponent = CURSOR.execute(sql, (self.id,)).fetchone()
+        opponent_data = CURSOR.execute(sql, (self.id,)).fetchone()
         CONN.commit()
-        return opponent if opponent else None
+        from classes.opponent import Opponent
+        return Opponent(*opponent_data) if opponent_data else None
