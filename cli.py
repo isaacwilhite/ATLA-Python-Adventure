@@ -128,7 +128,7 @@ def enter_map(player):
 
 
                 for battle_record in existing_battle_records:
-
+                    print(f"DEBUG: checking battle: {battle_record.player_id, battle_record.opponent_id }")
 
                     if battle_record.player_id == player.id and battle_record.opponent_id == opponent_at_location.id:
 

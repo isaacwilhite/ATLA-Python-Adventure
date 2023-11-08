@@ -168,7 +168,8 @@ class Battle():
             FROM battles
         """
         rows = CURSOR.execute(sql).fetchall()
-        return [cls(*row) for row in rows]
+
+        return [cls(row[1], row[2], row[3], row[0]) for row in rows]
 #!returns battle by battle id
     @classmethod
     def get_battle_by_id(cls, id):
@@ -178,6 +179,7 @@ class Battle():
             WHERE id = ?
         """
         battle_instance = CURSOR.execute(sql, (id,)).fetchone()
+
         if battle_instance is not None:
             return cls(*battle_instance)
         return None
