@@ -12,9 +12,9 @@ class Location:
     def __init__(self, name, description, category, id=None):
         self._name = name
         self._description = description
-        self.category = category
+        self.category = category #! Need to safeguard this entry
         self.id = id
-        self.directions = {}
+        self.directions = {} #! Need to safeguard this entry
 
     @property
     def name(self):
