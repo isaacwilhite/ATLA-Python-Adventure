@@ -44,11 +44,6 @@ class Battle():
         elif battle_result == "retreat":
             return "retreat"
 
-    def available_opponents(self, map_location, player):
-        #! pass in a map_location and player progress (which battles are lost (0))
-        #!return list of available opponents
-        pass
-
     def battle(self, player, opponent, category):
         opponent_solution = [skill.strip() for skill in opponent.solution.split(',')]
         click.echo(opponent.dialogue)
