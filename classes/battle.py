@@ -23,15 +23,21 @@ class Battle():
             battle_result = self.battle(player, opponent)
 
             if battle_result == "win":
-                #!try update status
-                    #!update status to win in db
+                click.echo("Congratulations! You are one step closer to mastering all four elements! Proceed to the next step to continue your journey in becoming the Avatar.")
+                try:
+                    self.update_battle_status(1)
+                    from abilities import Abilities
+                    # Abilities.create_db_instance(player.id, place_holder)
                     #~add new skill to Abilities Class (existing function)
+                    #! think about how to dynamically change the skill_id you want to add
+                except:
+                    raise Exception("Unable to update database")
 
             elif battle_result == "lose":
                 from player import Player
                 player.faint()
                 #!reset location
-            if battle_result == "retreat":
+            elif battle_result == "retreat":
                 break
                 #! use function that reset_map() takes you back to the beginning
 
@@ -77,7 +83,6 @@ class Battle():
         if opponent.health <= 0:
             click.echo(f"Congratulations! You've defeated {opponent.name}!")
             return "win"
-        #!function that will run a bunch of updates (add new skills)
         elif player.health <= 0:
             click.echo(f"You've been defeated by {opponent.name}. Better luck next time!")
             return "lose"
@@ -88,10 +93,28 @@ class Battle():
         return click.prompt(menu=skill_menu, type=click.Choice(skill_menu.keys()))
 
     #~ handles every move that a player makes
-    def perform_battle(self, chosen_skill, opponent_solution):
-        # Implement your battle logic here, compare the chosen skill with opponent_solution
-        # and return "win", "lose", or "retreat" accordingly
-        pass
+    def perform_battle(self, available_skills, opponent_solution):
+        while True:
+            skill_menu = {str(i + 1): skill[0] for i, skill in enumerate(available_skills)}
+            skill_menu[str(len(available_skills) + 1)] = 'retreat'
+
+            click.echo("Which move do you want to use?")
+            for i, skill_name in enumerate(available_skills):
+                click.echo(f"{i + 1}. {skill_name}")
+
+            skill_choice = click.prompt("Select a move", type=click.Choice(skill_menu.keys()))
+
+            if skill_choice == str(len(available_skills) + 1):
+                return "retreat"
+
+            elif skill_choice.isdigit() and 1 <= int(skill_choice) <= len(available_skills):
+                chosen_skill = available_skills[int(skill_choice) - 1]
+                if chosen_skill == opponent_solution:
+                    return "win"
+                else:
+                    return "lose"
+            else:
+                click.echo("Invalid input. Please select an appropriate choice.")
 #!automatic checkpoint function
 #!checkpoint in map menu#!split on ", " and if this in player.skills
 #!iterate aovera all of the abilities they have
