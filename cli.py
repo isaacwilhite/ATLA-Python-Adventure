@@ -94,28 +94,6 @@ def enter_map(player):
     locations = Location.load_locations(map_instance)
     current_location = locations[0]  # Assuming the starting location is the first in the list
 
-    opponent_at_location = current_location.retrieve_opponent()
-    current_category = current_location.retrieve_category()
-    if opponent_at_location == None:
-        click.echo("Continue exploring to find an opponent")
-    elif opponent_at_location:
-        existing_battle_records = Battle.all_battles()
-        for battle_record in existing_battle_records:
-            if battle_record.player_id == player.id and battle_record.opponent_id == opponent_at_location.id:
-                if battle_record.status == 0:
-                    battle = Battle.get_battle_by_id(battle_record.id)
-                    battle.start_battle(player, opponent_at_location, current_category)
-                    break
-                elif battle_record.status == 1:
-                    click.echo("You have already defeated this opponent")
-        #!no existing battle records
-        if len(existing_battle_records) == 0:
-            new_battle = Battle(player.id, opponent_at_location.id)
-            #!add battle record to database
-            new_battle.add_battle(player.id, opponent_at_location, 0)
-            #!start the battle
-            new_battle.start_battle(player, opponent_at_location, current_category)
-
 
     while True:
         display_location(current_location, locations)
@@ -128,10 +106,52 @@ def enter_map(player):
         connected_location_id = map_instance.get_connected_location_id(current_location.id, direction.capitalize())
 
         if connected_location_id is not None:
-            current_location = next((loc for loc in locations if loc.id == connected_location_id), None)
-            if current_location is None:
-                print("Error: Invalid connected location ID.")
-                break
+            #!new location???
+            new_location = next((loc for loc in locations if loc.id == connected_location_id), None)
+            opponent_at_location = new_location.retrieve_opponent()
+            current_category = new_location.retrieve_category()
+
+            if opponent_at_location is not None:
+                #!check if there is an existing battle record
+                existing_battle_records = Battle.all_battles()
+                for battle_record in existing_battle_records:
+                    if battle_record.player_id == player.id and battle_record.opponent_id == opponent_at_location.id:
+                        if battle_record.status == 0:
+                            battle = Battle.get_battle_by_id(battle_record.id)
+                            battle_outcome = battle.start_battle(player, opponent_at_location, current_category)
+
+                            #!check outcome of battle
+                            if battle.outcome == "win":
+                                click.echo("Congratulations! You won the battle.")
+                                #!move to new location
+                                current_location = new_location
+                            elif battle_outcome == "retreat":
+                                click.echo("You retreated from the battle")
+                                break
+                else:
+                    #!no existing battle record
+                    new_battle = Battle(player.id, opponent_at_location.id)
+                    #!add battle record to database
+                    new_battle.add_battle(player.id, opponent_at_location, 0)
+                    #!start the battle
+                    battle_outcome = new_battle.start_battle(player, opponent_at_location, current_category)
+                    #!check outcome of battle
+                    if battle.outcome == "win":
+                        click.echo("Congratulations! You won the battle.")
+                        #!move to new location
+                        current_location = new_location
+                    elif battle_outcome == "retreat":
+                        click.echo("You retreated from the battle")
+                        break
+            else:
+                #!no opponent at the new location, move to new location
+                click.echo("Continue exploring to find an opponent")
+                current_location = new_location
+
+        elif current_location is None:
+            print("Error: Invalid connected location ID.")
+            break
+
         else:
             print("Error: Invalid direction. Please choose a valid direction.")
 
