@@ -4,12 +4,12 @@ CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
 class Opponent:
-    def __init__(self, name, dialogue, solution, health, nation_id, id=None):
+    def __init__(self, name, dialogue, solution, health, location_id, id=None):
         self.name = name
         self.dialogue = dialogue
         self.solution = solution #add properties
         self.health = health #add properties
-        self.nation_id = nation_id #add properties
+        self.location_id = location_id #add properties
 
     @property
     def name(self):
@@ -40,7 +40,7 @@ class Opponent:
             dialogue TEXT,
             solution TEXT,
             health INTEGER,
-            nation_id INTEGER)
+            location_id INTEGER)
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -55,14 +55,14 @@ class Opponent:
 
     def save(self):
         sql = """
-            INSERT INTO opponents (name, dialogue, solution, health, nation_id)
+            INSERT INTO opponents (name, dialogue, solution, health, location_id)
             VALUES (?, ?, ?, ?, ?)
         """
-        CURSOR.execute(sql, (self.name, self.dialogue, self.solution, self.health, self.nation_id))
+        CURSOR.execute(sql, (self.name, self.dialogue, self.solution, self.health, self.location_id))
         CONN.commit()
 
     @classmethod
-    def create(cls, name, dialogue, solution, health, nation_id):
-        opponent = cls(name, dialogue, solution, health, nation_id)
+    def create(cls, name, dialogue, solution, health, location_id):
+        opponent = cls(name, dialogue, solution, health, location_id)
         opponent.save()
         return opponent
