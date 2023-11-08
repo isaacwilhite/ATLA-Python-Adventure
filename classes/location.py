@@ -84,3 +84,22 @@ class Location:
             location.directions = map_instance.directions.get(location.id, {})
             locations.append(location)
         return locations
+
+    def retrieve_category(self):
+        sql = """
+            SELECT category FROM locations
+            WHERE location_id = ?
+        """
+        category = CURSOR.execute(sql, (self.id,)).fetchone()
+        return category
+
+    #~~~~~~~~~associations
+    def retrieve_opponent(self):
+        sql = """
+            SELECT o.id, o.name, o.dialogue, o.health, o.solution
+            FROM opponents o
+            WHERE o.location_id = ? AND o.status = 0
+        """
+        opponent = CURSOR.execute(sql, (self.id,)).fetchone()
+        CONN.commit()
+        return opponent
