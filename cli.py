@@ -2,6 +2,8 @@ import click
 import sys
 from classes.player import *
 from classes.abilities import *
+from classes.map import *
+from classes.location import *
 from helpers import (
     create_new_user,
     login_existing_user,
@@ -57,8 +59,8 @@ def adventure(player):
         adventure_choice = click.prompt("Choose an option (1/2/3/4)", type=click.Choice(['1', '2', '3', '4']))
 
         if adventure_choice == '1':
-            #!map /battle logic
-            pass
+            enter_map()
+            #!battle logic
         if adventure_choice == '2':
             skills = Abilities.get_skills_for_player(player.id)
             click.echo(f"Your skills: {', '.join(skills)}")
