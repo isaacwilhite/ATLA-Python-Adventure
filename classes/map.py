@@ -17,18 +17,7 @@ class Map:
 
 map_instance = Map()
 
-# Add connections between locations
-map_instance.add_connection(1, "North", 2)
-map_instance.add_connection(3, "North", 2)
-map_instance.add_connection(2, "South", 3)
-map_instance.add_connection(4, "South", 3)
-map_instance.add_connection(6, "East", 4)
-map_instance.add_connection(3, "East", 4)
-map_instance.add_connection(7, "West", 8)
-map_instance.add_connection(9, "West", 8)
-map_instance.add_connection(8, "Northeast", 9)
-map_instance.add_connection(10, "Northeast", 9)
-map_instance.add_connection(9, "Southeast", 10)
+
 
 
 
