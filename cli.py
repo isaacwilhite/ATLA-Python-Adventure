@@ -99,7 +99,7 @@ def enter_map():
 
         if direction == 'Q':
             print("Exiting the map. Goodbye!")
-            break
+            return
 
         connected_location_id = map_instance.get_connected_location_id(current_location.id, direction.capitalize())
 
