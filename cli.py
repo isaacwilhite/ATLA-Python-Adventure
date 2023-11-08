@@ -135,8 +135,9 @@ def enter_map(player):
 
                         if battle_record.status == 0:
 
-
+                            print(f"DEBUG: checking battle")
                             battle = Battle.get_battle_by_id(battle_record.id)
+
 
                             battle_outcome = battle.start_battle(player, opponent_at_location, current_category)
 
@@ -167,6 +168,7 @@ def enter_map(player):
 
                     if battle_outcome == "win":
                         click.echo("You are ready for your next battle!")
+
                         # Move to new location
                         current_location = new_location
                     elif battle_outcome == "retreat":
