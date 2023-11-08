@@ -26,8 +26,8 @@ Battle.create_table()
 #table data
 opponent_data = [
     ("Monk Tashi", "You have not been training hard enough! Let me test your skills in airbending and see if you can defeat me!", "air blast", 10, 2),
-    ("Guru Pathik", "You must strengthen your spiritual connection to the world around you. Only by opening your chakras, can you finally master the Air element. Let’s test your skills!", "air blast, air scooter, air slice", 35, 3),
-    ("Monk Giatso", "You have made it so far! I believe in your abilities to become an amazing Avatar. Let me see your bending in action before we give you your Airbending tattoos and make you a full airbender!", "air blast, air scooter, air slice, air glide, air shield", 70, 4)
+    ("Guru Pathik", "You must strengthen your spiritual connection to the world around you. Only by opening your chakras, can you finally master the Air element. Let’s test your skills!", "air blast,air scooter,air slice", 35, 3),
+    ("Monk Giatso", "You have made it so far! I believe in your abilities to become an amazing Avatar. Let me see your bending in action before we give you your Airbending tattoos and make you a full airbender!", "air blast,air scooter,air slice,air glide,air shield", 70, 4)
 ]
 location_data = [
     ("Air Nomads", "Welcome to the Air Nomads! Here you can learn Air bending.", "air"),

@@ -96,10 +96,10 @@ def enter_map(player):
 
     locations = Location.load_locations(map_instance)
     current_location = locations[0]  # Assuming the starting location is the first in the list
-
+    # display_location(current_location, locations)
 
     while True:
-        print("Debug: Inside the while loop")
+
         display_location(current_location, locations)
         direction = input("\nEnter the direction to move (q to quit): ").capitalize()
 
@@ -107,42 +107,42 @@ def enter_map(player):
             print("Exiting the map. Goodbye!")
             return
 
-        print(f"Debug: Direction entered: {direction}")
+
 
         connected_location_id = map_instance.get_connected_location_id(current_location.id, direction)
 
-        print(f"Debug: Connected Location ID: {connected_location_id}")
+
 
         if connected_location_id is not None:
             new_location = next((loc for loc in locations if loc.id == connected_location_id), None)
             opponent_at_location = new_location.retrieve_opponent()
             current_category = new_location.retrieve_category()
 
-            print(f"Debug: Opponent at location: {opponent_at_location}")
-            print(f"Debug: Current category: {current_category}")
+
 
             if opponent_at_location is not None:
-                print("Debug: Opponent found at the new location")
+
 
                 # Check for existing battle record
                 existing_battle_records = Battle.all_battles()
-                print(f"Debug: Existing battle records: {existing_battle_records}")
+
 
                 for battle_record in existing_battle_records:
-                    print(f"Debug: Checking battle record: {battle_record}")
+
 
                     if battle_record.player_id == player.id and battle_record.opponent_id == opponent_at_location.id:
-                        print(f"Debug: Found matching battle record: {battle_record}")
-                        
-                        if battle_record.status == 0:
-                            print("Debug: Existing battle record found with status 0")
 
+
+                        if battle_record.status == 0:
+
+                            print(f"DEBUG: checking battle")
                             battle = Battle.get_battle_by_id(battle_record.id)
-                            print(f"Debug: Initiating battle with ID: {battle_record.id}")
+
+
                             battle_outcome = battle.start_battle(player, opponent_at_location, current_category)
 
                             # Check outcome of battle
-                            print(f"Debug: Battle outcome: {battle_outcome}")
+
 
                             if battle_outcome == "win":
                                 click.echo("Congratulations! You won the battle.")
@@ -167,7 +167,8 @@ def enter_map(player):
                     print(f"Debug: Battle outcome: {battle_outcome}")
 
                     if battle_outcome == "win":
-                        click.echo("Congratulations! You won the battle.")
+                        click.echo("You are ready for your next battle!")
+
                         # Move to new location
                         current_location = new_location
                     elif battle_outcome == "retreat":
