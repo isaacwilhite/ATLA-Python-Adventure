@@ -116,8 +116,4 @@ class Player:
     def defeated_opponents(self):
         #return list of opponents if player_id matches in opponent and status is 1
         from battle import Battle
-
-    #!association method, select abilities where player id
-        #!player_abilities()
-        #!so the player knows what they have in ability
-        #!player has defeated which opponents
+        return [record[1] for record in Battle.all() if record[0] == self.id]

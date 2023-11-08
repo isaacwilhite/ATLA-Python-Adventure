@@ -60,7 +60,7 @@ class Battle():
         CURSOR.execute(sql)
         CONN.commit()
 
-    @c la s s me t ho d
+    @classmethod
     def drop_table(cls):
         sql = """
             DROP TABLE IF EXISTS battles
@@ -84,3 +84,16 @@ class Battle():
         """
         CURSOR.execute(sql, (status, self.id))
         CONN.commit()
+
+#association method
+    @classmethod
+    def all(cls):
+        sql = """
+            SELECT a.player_id, o.name
+            FROM battles a
+            JOIN opponents o ON a.opponent_id = o.id
+            WHERE a.status = 1
+        """
+        CURSOR.execute(sql)
+        records = CURSOR.fetchall()
+        return [(record[0], record[1]) for record in records]
