@@ -16,38 +16,33 @@ class Battle():
 
 
 #!if the status is 0 then just have a value
-    def start_battle(self, player, map_location):
-        #what opponents are available at that location
-        available_opponents = self.available_opponents(map_location, player)
+    def start_battle(self, player, opponent, category):
+        battle_result = self.battle(player, opponent, category)
 
-        #!Battle Loop
-        #!no loop needed, only put in one opponent
-        for opponent in available_opponents:
-            battle_result = self.battle(player, opponent)
+        if battle_result == "win":
+            click.echo("Congratulations! You are one step closer to mastering all four elements! Proceed to the next step to continue your journey in becoming the Avatar.")
+            try:
+                self.update_battle_status(1)
+                from abilities import Abilities
+                # Abilities.create_db_instance(player.id, place_holder)
+                #~add new skill to Abilities Class (existing function)
+                #! think about how to dynamically change the skill_id you want to add
+            except Exception as e:
+                print(f"An error occurred while updating the database: {str(e)}")
 
-            if battle_result == "win":
-                click.echo("Congratulations! You are one step closer to mastering all four elements! Proceed to the next step to continue your journey in becoming the Avatar.")
-                try:
-                    self.update_battle_status(1)
-                    from abilities import Abilities
-                    # Abilities.create_db_instance(player.id, place_holder)
-                    #~add new skill to Abilities Class (existing function)
-                    #! think about how to dynamically change the skill_id you want to add
-                except Exception as e:
-                    print(f"An error occurred while updating the database: {str(e)}")
+        elif battle_result == "lose":
+            try:
+                self.update_battle_status(0)
+            except Exception as e:
+                print(f"An error occurred while updating the database: {str(e)}")
 
-            elif battle_result == "lose":
-                try:
-                    self.update_battle_status(0)
-                except Exception as e:
-                    print(f"An error occurred while updating the database: {str(e)}")
-
-                from player import Player
-                player.faint()
-                #!reset location
-            elif battle_result == "retreat":
-                break
-                #! use function that reset_map() takes you back to the beginning
+            from player import Player
+            player.faint()
+            #!reset location
+        elif battle_result == "retreat":
+            pass
+            #! use function that reset_map() takes you back to the beginning
+            #!you need to return something to exit this function
 
     def available_opponents(self, map_location, player):
         #! pass in a map_location and player progress (which battles are lost (0))
@@ -171,7 +166,7 @@ class Battle():
             FROM battles
         """
         rows = CURSOR.execute(sql).fetchall()
-        return [row for row in rows]
+        return [cls(*row) for row in rows]
 #!returns battle by battle id
     @classmethod
     def get_battle_by_id(cls, id):
@@ -181,7 +176,9 @@ class Battle():
             WHERE id = ?
         """
         battle_instance = CURSOR.execute(sql, (id,)).fetchone()
-        return battle_instance
+        if battle_instance is not None:
+            return cls(*battle_instance)
+        return None
 
 #association method
     #battles that were won

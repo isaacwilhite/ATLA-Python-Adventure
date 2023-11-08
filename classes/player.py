@@ -81,8 +81,6 @@ class Player:
 
     def faint(self):
         self.health = 10 #reset health
-        #! reset_location()
-        #clear inventory(?)
 
     ##update database at checkpoint
     def update_db_with_health(self):

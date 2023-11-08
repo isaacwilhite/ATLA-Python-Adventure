@@ -4,6 +4,7 @@ from classes.player import *
 from classes.abilities import *
 from classes.map import *
 from classes.location import *
+from classes.battle import *
 from helpers import (
     create_new_user,
     login_existing_user,
@@ -59,7 +60,7 @@ def adventure(player):
         adventure_choice = click.prompt("Choose an option (1/2/3/4)", type=click.Choice(['1', '2', '3', '4']))
 
         if adventure_choice == '1':
-            enter_map()
+            enter_map(player)
             #!battle logic
         if adventure_choice == '2':
             skills = Abilities.get_skills_for_player(player.id)
@@ -72,7 +73,7 @@ def adventure(player):
         else:
             click.echo("Invalid choice. Please enter '1', '2', '3', or '4'.")
 
-def enter_map():
+def enter_map(player):
     map_instance = Map()
 
     # Add connections between locations
@@ -93,6 +94,29 @@ def enter_map():
     locations = Location.load_locations(map_instance)
     current_location = locations[0]  # Assuming the starting location is the first in the list
 
+    opponent_at_location = current_location.retrieve_opponent()
+    current_category = current_location.retrieve_category()
+    if opponent_at_location == None:
+        click.echo("Continue exploring to find an opponent")
+    elif opponent_at_location:
+        existing_battle_records = Battle.all_battles()
+        for battle_record in existing_battle_records:
+            if battle_record.player_id == player.id and battle_record.opponent_id == opponent_at_location.id:
+                if battle_record.status == 0:
+                    battle = Battle.get_battle_by_id(battle_record.id)
+                    battle.start_battle(player, opponent_at_location, current_category)
+                    break
+                elif battle_record.status == 1:
+                    click.echo("You have already defeated this opponent")
+        #!no existing battle records
+        if len(existing_battle_records) == 0:
+            new_battle = Battle(player.id, opponent_at_location.id)
+            #!add battle record to database
+            new_battle.add_battle(player.id, opponent_at_location, 0)
+            #!start the battle
+            new_battle.start_battle(player, opponent_at_location, current_category)
+
+
     while True:
         display_location(current_location, locations)
         direction = input("\nEnter the direction to move (q to quit): ").capitalize()
@@ -110,6 +134,7 @@ def enter_map():
                 break
         else:
             print("Error: Invalid direction. Please choose a valid direction.")
+
 
 if __name__ == "__main__":
     welcome()
