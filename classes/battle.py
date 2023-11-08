@@ -30,6 +30,8 @@ class Battle():
             except Exception as e:
                 print(f"An error occurred while updating the database: {str(e)}")
 
+            return "win"
+
         elif battle_result == "lose":
             try:
                 self.update_battle_status(0)
@@ -38,11 +40,9 @@ class Battle():
 
             from player import Player
             player.faint()
-            #!reset location
+            return "retreat"
         elif battle_result == "retreat":
-            pass
-            #! use function that reset_map() takes you back to the beginning
-            #!you need to return something to exit this function
+            return "retreat"
 
     def available_opponents(self, map_location, player):
         #! pass in a map_location and player progress (which battles are lost (0))
