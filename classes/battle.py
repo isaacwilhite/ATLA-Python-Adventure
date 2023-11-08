@@ -1,4 +1,6 @@
 import sqlite3
+import click
+import random
 
 CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
@@ -38,8 +40,57 @@ class Battle():
         #!return list of available opponents
         pass
 
-    def battle(self, player, opponent):
-        #! battle logic, take turns, return "win", "lose", "retreat"
+    def battle(self, player, opponent, category):
+        opponent_solution = [skill.strip() for skill in opponent.solution.split(',')]
+        click.echo(opponent.dialogue)
+
+        while opponent.health > 0 and player.health > 0:
+            hint_skill = random.choice(opponent_solution)
+
+            from player import Player
+            available_skills = player.get_all_skill_data_by_category(category)
+            skill_info = next((skill for skill in available_skills if skill[0] == hint_skill), None)
+
+            if skill_info is None:
+                click.echo("You don't have any skills to use!")
+                break
+
+            skill_name, skill_description, skill_point_cost = skill_info
+            skill_choice = skill_name  # The player directly uses the skill
+
+            hint_description = skill_info[1]  # Description of the matching skill
+            click.echo(f"I think you may need something that will {hint_description}.")
+
+            battle_result = self.perform_battle(available_skills, hint_skill)
+
+            if battle_result == "win":
+                opponent.health -= skill_point_cost
+                click.echo(f"You've hit the opponent with {skill_name}!")
+                opponent_solution.remove(hint_skill)
+            elif battle_result == "lose":
+                player.decrease_health(1)
+                click.echo(f"The opponent has hit you! Your health is now {player.health}.")
+            elif battle_result == "retreat":
+                click.echo("You've decided to retreat from battle.")
+                return "retreat"
+
+        if opponent.health <= 0:
+            click.echo(f"Congratulations! You've defeated {opponent.name}!")
+            return "win"
+        #!function that will run a bunch of updates (add new skills)
+        elif player.health <= 0:
+            click.echo(f"You've been defeated by {opponent.name}. Better luck next time!")
+            return "lose"
+
+    def get_player_skill_choice(self, available_skills):
+        skill_menu = {str(i + 1): skill for i, skill in enumerate(available_skills)}
+        click.echo("Choose a skill to use:")
+        return click.prompt(menu=skill_menu, type=click.Choice(skill_menu.keys()))
+
+    #~ handles every move that a player makes
+    def perform_battle(self, chosen_skill, opponent_solution):
+        # Implement your battle logic here, compare the chosen skill with opponent_solution
+        # and return "win", "lose", or "retreat" accordingly
         pass
 #!automatic checkpoint function
 #!checkpoint in map menu#!split on ", " and if this in player.skills
