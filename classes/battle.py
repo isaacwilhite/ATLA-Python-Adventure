@@ -14,8 +14,6 @@ class Battle():
 
 #!must add properties to the different attributes
 
-
-#!if the status is 0 then just have a value
     def start_battle(self, player, opponent, category):
         battle_result = self.battle(player, opponent, category)
 
