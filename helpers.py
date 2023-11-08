@@ -1,6 +1,9 @@
 import click
 from classes.player import *
 import sys
+from classes.location import *
+import subprocess
+import os
 
 def create_new_user():
     click.echo("Welcome, new Avatar! You can create your username now.")
@@ -59,6 +62,38 @@ def remove_player_from_db():
                 click.echo("Invalid choice. Please enter 'yes' or 'no'.")
         else:
             click.echo("Player not found. Please check your username.")
+
+#~~~~~~~~~~~~~~~~~~~Map Functions~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def load_locations():
+    locations = []
+    sql = "SELECT * FROM locations"
+    CURSOR.execute(sql)
+    rows = CURSOR.fetchall()
+    for row in rows:
+        location = Location(name=row[1], description=row[2], category=row[3], id=row[0])
+        locations.append(location)
+    return locations
+
+def display_location(location, locations):
+    subprocess.run('clear' if os.name == 'posix' else 'cls', shell=True)
+    print(f"Location: {location.name}")
+    print(f"Description: {location.description}")
+    print(f"Category: {location.category}")
+    print("\nAvailable Directions:")
+    for direction, connected_location_id in location.directions.items():
+        connected_location = next((loc for loc in locations if loc.id == connected_location_id), None)
+        print(f"{direction.capitalize()}: {connected_location.name if connected_location else 'Unknown'}")
+
+def move(self, direction):
+    # Retrieve the connected location name based on the current location and direction
+    connected_location_name = self.map_instance.get_connected_location_name(self.current_location_id, direction)
+
+    if connected_location_name:
+        print(f"You are moving {direction} to {connected_location_name}.")
+        # Update the current location for future moves
+        self.current_location_id = self.map_instance.get_location_id_by_name(connected_location_name)
+    else:
+        print(f"There is no connection {direction} from your current location.")
 
 ##exit function
 def check_quit(string):
