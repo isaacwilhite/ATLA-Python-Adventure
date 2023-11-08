@@ -6,10 +6,9 @@ CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
 class Battle():
-    def __init__(self, player_id, opponent_id, challenge_id, status=0, id=None):
+    def __init__(self, player_id, opponent_id, status=0, id=None):
         self.player_id = player_id
         self.opponent_id = opponent_id
-        self.challenge_id = challenge_id
         self.status = status
         self.id = id
 
@@ -164,7 +163,28 @@ class Battle():
         CURSOR.execute(sql, (status, self.id))
         CONN.commit()
 
+#!returns list of all battle instances
+    @classmethod
+    def all_battles(cls):
+        sql = """
+            SELECT *
+            FROM battles
+        """
+        rows = CURSOR.execute(sql).fetchall()
+        return [row for row in rows]
+#!returns battle by battle id
+    @classmethod
+    def get_battle_by_id(cls, id):
+        sql = """
+            SELECT *
+            FROM battles
+            WHERE id = ?
+        """
+        battle_instance = CURSOR.execute(sql, (id,)).fetchone()
+        return battle_instance
+
 #association method
+    #battles that were won
     @classmethod
     def all(cls):
         sql = """

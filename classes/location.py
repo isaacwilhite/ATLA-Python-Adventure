@@ -98,8 +98,8 @@ class Location:
         sql = """
             SELECT o.id, o.name, o.dialogue, o.health, o.solution
             FROM opponents o
-            WHERE o.location_id = ? AND o.status = 0
+            WHERE o.location_id = ?
         """
         opponent = CURSOR.execute(sql, (self.id,)).fetchone()
         CONN.commit()
-        return opponent
+        return opponent if opponent else None
