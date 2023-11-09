@@ -14,12 +14,15 @@ class Battle():
 
 #!must add properties to the different attributes
 
-    def start_battle(self, player, opponent, category):
+    def start_battle(self, battle, player, opponent, category):
         battle_result = self.battle(player, opponent, category)
+        print(f"DEBUG DO YOU HAVE BATTLE {battle}")
 
         if battle_result == "win":
             click.echo("You are one step closer to mastering all four elements! Proceed to the next step to continue your journey in becoming the Avatar.")
             try:
+                print(f"DEBUG: Are you trying")
+                print(f"DO You have an ID: {battle.id}")
                 self.update_battle_status(1)
                 from classes.abilities import Abilities
                 # Abilities.create_db_instance(player.id, place_holder)
@@ -155,6 +158,8 @@ class Battle():
             WHERE id = ?
         """
         try:
+            print(f"DEBUG YOUR ID: {self.id}")
+            print(f"DEBUG YOUR STATUS: {status}")
             CURSOR.execute(sql, (status, self.id))
             CONN.commit()
         except Exception as e:
@@ -178,10 +183,10 @@ class Battle():
             FROM battles
             WHERE id = ?
         """
-        battle_instance = CURSOR.execute(sql, (id,)).fetchone()
+        row = CURSOR.execute(sql, (id,)).fetchone()
 
-        if battle_instance is not None:
-            return cls(*battle_instance)
+        if row is not None:
+            return cls(row[1], row[2], row[3], row[0])
         return None
 
 #association method

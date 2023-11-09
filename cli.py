@@ -126,34 +126,35 @@ def enter_map(player):
                 # Check for existing battle record
                 existing_battle_records = Battle.all_battles()
 
+                if existing_battle_records:
+                    for battle_record in existing_battle_records:
+                        print(f"DEBUG: checking battle: {battle_record.player_id, battle_record.opponent_id }")
 
-                for battle_record in existing_battle_records:
-                    print(f"DEBUG: checking battle: {battle_record.player_id, battle_record.opponent_id }")
+                        if battle_record.player_id == player.id and battle_record.opponent_id == opponent_at_location.id:
+                            print(f"DEBUG: Are we here? You found a battle record")
 
-                    if battle_record.player_id == player.id and battle_record.opponent_id == opponent_at_location.id:
+                            if battle_record.status == 0:
 
+                                print(f"DEBUG: entered loop where 0")
+                                battle = Battle.get_battle_by_id(battle_record.id)
 
-                        if battle_record.status == 0:
+                                print(f"DEBUG battle: {battle}")
+                                battle_outcome = battle.start_battle(battle, player, opponent_at_location, current_category)
 
-                            print(f"DEBUG: checking battle")
-                            battle = Battle.get_battle_by_id(battle_record.id)
-
-
-                            battle_outcome = battle.start_battle(player, opponent_at_location, current_category)
-
-                            # Check outcome of battle
+                                # Check outcome of battle
 
 
-                            if battle_outcome == "win":
-                                click.echo("Congratulations! You won the battle.")
-                                # Move to new location
-                                current_location = new_location
-                            elif battle_outcome == "retreat":
-                                click.echo("You retreated from the battle")
-                                break
+                                if battle_outcome == "win":
+                                    click.echo("Congratulations! You won the battle.")
 
-                        else:
-                            pass
+                                    # Move to new location
+                                    current_location = new_location
+                                elif battle_outcome == "retreat":
+                                    click.echo("You retreated from the battle")
+                                    break
+
+                            else:
+                                click.echo("You have already defeated this opponent")
                 else:
                     # No existing battle record
                     print("Debug: No existing battle record found")
@@ -162,7 +163,8 @@ def enter_map(player):
                     # Add battle record to the database
                     new_battle.add_battle(player.id, opponent_at_location.id, 0)
                     # Start the battle
-                    battle_outcome = new_battle.start_battle(player, opponent_at_location, current_category)
+                    print(f"DEBUG Has the battle been created: {new_battle}")
+                    battle_outcome = new_battle.start_battle(new_battle, player, opponent_at_location, current_category)
                     # Check outcome of battle
                     print(f"Debug: Battle outcome: {battle_outcome}")
 
