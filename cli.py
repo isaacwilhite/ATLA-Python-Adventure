@@ -155,6 +155,7 @@ def enter_map(player):
 
                             else:
                                 click.echo("You have already defeated this opponent")
+                                current_location = new_location
                 else:
                     # No existing battle record
                     print("Debug: No existing battle record found")
