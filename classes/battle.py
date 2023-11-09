@@ -25,7 +25,11 @@ class Battle():
                 if self.status == 0:
                     self.update_battle_status(1)  # Update status if it's 0
                 from classes.abilities import Abilities
-                Abilities.create_db_instance(player.id, 5) #! add reward column
+                reward_list = [reward.strip() for reward in opponent.reward.split(',')]
+                for reward in reward_list:
+                    print(f"Reward: {reward}")
+                    print(f"Reward: {type(reward)}")
+                    Abilities.create_db_instance(player.id, reward)
             except Exception as e:
                 print(f"An error occurred while updating the database: {str(e)}")
 
