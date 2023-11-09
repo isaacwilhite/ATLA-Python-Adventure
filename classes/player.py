@@ -46,10 +46,10 @@ class Player:
 
     def save(self):
         sql = """
-            INSERT INTO players (username, health)
-            VALUES (?, ?)
+            INSERT INTO players (id, username, health)
+            VALUES (?, ?, ?)
         """
-        CURSOR.execute(sql, (self.username, self.health))
+        CURSOR.execute(sql, (self.id, self.username, self.health))
         CONN.commit()
 
     @classmethod
@@ -105,6 +105,15 @@ class Player:
         except sqlite3.Error as e:
             print(f'Error deleting player: {e}')
 
+    @classmethod
+    def all(cls):
+        sql = """
+            SELECT *
+            FROM players
+        """
+        CURSOR.execute(sql)
+        rows = CURSOR.fetchall()
+        return [cls(row[1], row[2], row[0]) for row in rows]
 ##association methods
     def player_skills(self):
         # Return a list of skills associated with the player
