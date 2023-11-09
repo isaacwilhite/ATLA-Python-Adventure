@@ -125,10 +125,6 @@ abilities_data = [
     (1, 3),
     (1, 4)
 ]
-
-battle_data = [
-    (1,1,1)
-]
 #create instances
 
 ##opponent
@@ -151,7 +147,3 @@ for data in player_data:
 for data in abilities_data:
     player_id, skill_id = data
     Abilities.create_db_instance(player_id, skill_id)
-
-for data in battle_data:
-    player_id, opponent_id, status = data
-    Battle.add_battle(player_id, opponent_id, status)
