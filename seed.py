@@ -37,7 +37,7 @@ opponent_data = [
     ("Admiral Zhao", "I am Admiral Zhao, and my ambition burns brighter than the flames I command. Your little journey ends here, with your defeat!", "Blazing Arc", 10, 16,"20,21"),
     ("Prince Zuko", "I am Prince Zuko, son of Fire Lord Ozai, and I will regain my honor by defeating you!", "Blazing Arc,Ember Step,Inferno Pillar", 35, 17,"22,24"),
     ("Azula", "I’m Princess Azula. Only the best and strongest can stand by my side. Do you have what it takes, or will you crumble like so many before you?", "Blazing Arc,Ember Step,Inferno Pillar,Dragon's Maw,Phoenix Flight", 75, 18, "23"),
-    ("Fire Lord Ozai", "I am Fire Lord Ozai, the Phoenix King, the most powerful firebender in the world. Bow before me or be consumed by my fire!", "Air Blast,Air Scooter,Air Slice,Air Glide,Air Shield,Rock Throw,Rock Cuffs,Rock Armor,Rock Gloves,Sand Blast,Waterball,Ice Blade,Tidal Wave,Water Jet,Multiple Water Whips,Blazing Arc,Ember Step,Inferno Pillar,Dragon's Maw,Phoenix Flight", 150, 19, "0")
+    ("Fire Lord Ozai", "I am Fire Lord Ozai, the Phoenix King, the most powerful firebender in the world. Bow before me or be consumed by my fire!", "Air Blast,Air Slice,Air Glide,Rock Armor,Rock Gloves,Sand Blast,Tidal Wave,Water Jet,Multiple Water Whips,Dragon's Maw,Phoenix Flight", 150, 19, "0")
 ]
 
 location_data = [

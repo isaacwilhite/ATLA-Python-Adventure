@@ -19,7 +19,7 @@ console = Console()
 # custom_style_key =
 #     [
 #         "air": "dc8c24",
-#         "fire": "89OEO5",
+#         "fire": "#890e05",
 #         "fire-bold": "bold reverse red"
 #         "water":"66d7eb",
 #         "earth": "#295427"
@@ -31,7 +31,9 @@ def welcome():
 
     with open(file_path, 'r') as file:
         content = file.read()
-        print(content)
+        click.echo()
+        click.echo()
+        console.print(content, style="#ed9609")
 
 def main_menu():
     while True:

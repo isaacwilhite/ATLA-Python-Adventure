@@ -55,7 +55,7 @@ class Battle(): #!added status
             console.print(f"{opponent.dialogue}", style="#dc8c24")
             click.echo()
         elif category == "fire":
-            console.print(f"{opponent.dialogue}", style="#89OEO5")
+            console.print(f"{opponent.dialogue}", style="#890e05")
             click.echo()
         elif category == "water":
             console.print(f"{opponent.dialogue}", style="#66d7eb")
