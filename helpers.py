@@ -95,10 +95,10 @@ def display_location(location, locations):
         console.print(f"Category: {location.category}", style="#dc8c24")
         console.print("\nAvailable Directions:", style="#dc8c24")
     elif location.category == "fire":
-        console.print(f"Location: {location.name}", style="#89OEO5")
-        console.print(f"Description: {location.description}", style="#89OEO5")
-        console.print(f"Category: {location.category}", style="#89OEO5")
-        console.print("\nAvailable Directions:", style="#89OEO5")
+        console.print(f"Location: {location.name}", style="#890E05")
+        console.print(f"Description: {location.description}", style="#890E05")
+        console.print(f"Category: {location.category}", style="#890E05")
+        console.print("\nAvailable Directions:", style="#890E05")
     elif location.category == "water":
         console.print(f"Location: {location.name}", style="#66d7eb")
         console.print(f"Description: {location.description}", style="#66d7eb")
