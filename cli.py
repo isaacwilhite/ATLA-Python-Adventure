@@ -114,9 +114,10 @@ def enter_map(player):
             if opponent_at_location is not None:
                 # Check for existing battle record
                 existing_battle_records = Battle.all_battles()
-
+                battle_found = False #!set flag
                 for battle_record in existing_battle_records:
                     if battle_record.player_id == player.id and battle_record.opponent_id == opponent_at_location.id:
+                        battle_found = True #!set flag
                         if battle_record.status == 0:
                             battle = Battle.get_battle_by_id(battle_record.id)
                             battle_outcome = battle.start_battle(player, opponent_at_location, current_category)
@@ -125,13 +126,17 @@ def enter_map(player):
                                 click.echo("Congratulations! You won the battle.")
                                 # Move to new location
                                 current_location = new_location
+                                battle_found = True #!set flag
                             elif battle_outcome == "retreat":
                                 click.echo("You retreated from the battle")
+                                battle_found = True #!set flag
                                 break
                         else:
                             click.echo("You already defeated this opponent")
                             current_location = new_location
-                else:
+                            battle_found = True #!set flag
+                            break
+                if not battle_found: #!changed from else
                     # No existing battle record
 
                     new_battle = Battle(player.id, opponent_at_location.id, 0)
@@ -139,9 +144,9 @@ def enter_map(player):
                     # Add battle record to the database
                     new_battle.add_battle(player.id, opponent_at_location.id, 0)
                     # Start the battle
-                    print(f"NEW BATTLE ID?: {new_battle.id}")
 
-                    # new_battle = Battle.get_battle_by_id(new_battle.id)#!new code added
+
+                    new_battle = Battle.get_battle_by_id(new_battle.id)#!new code added
 
                     battle_outcome = new_battle.start_battle(player, opponent_at_location, current_category)  # Pass current_category
                     # Check outcome of battle
