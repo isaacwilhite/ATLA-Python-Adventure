@@ -144,7 +144,7 @@ def enter_map(player):
                     # Add battle record to the database
                     new_battle.add_battle(player.id, opponent_at_location.id, 0)
                     # Start the battle
-                    print(f"NEW BATTLE ID?: {new_battle.id}")
+
 
                     new_battle = Battle.get_battle_by_id(new_battle.id)#!new code added
 
