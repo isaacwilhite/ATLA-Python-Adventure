@@ -23,4 +23,4 @@ map_instance = Map()
 
 # Get the connected location ID
 connected_location_id = map_instance.get_connected_location_id(1, "north")
-print(f"The location connected to the north of location 1 is location {connected_location_id}")
+# print(f"The location connected to the north of location 1 is location {connected_location_id}")
