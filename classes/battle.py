@@ -11,7 +11,7 @@ class Battle():
         self.player_id = player_id
         self.opponent_id = opponent_id
         self.id = id
-        self.status = None  # Initialize status attribute
+        self.status = None  #!potentially need to change
 
     def start_battle(self, player, opponent, category):
         if self.status is None:
@@ -172,7 +172,7 @@ class Battle():
         row = CURSOR.execute(sql, (id,)).fetchone()
 
         if row is not None:
-            return cls(row[1], row[2], row[3], row[0])
+            return cls(row[1], row[2], row[0]) #!removed row[3]
         return None
 
     @classmethod
