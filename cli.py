@@ -1,5 +1,4 @@
 import click
-import sys
 from classes.player import *
 from classes.abilities import *
 from classes.map import *
@@ -22,7 +21,6 @@ def welcome():
     with open(file_path, 'r') as file:
         content = file.read()
         print(content)
-##prompt user for a choice
 
 def main_menu():
     while True:
@@ -31,7 +29,7 @@ def main_menu():
         click.echo("2. Load a Saved Game")
         click.echo("3. Remove Player")
         click.echo("4. Quit")
-        choice = click.prompt("Choose an option)", type=click.Choice(['1', '2', '3', '4']))
+        choice = click.prompt("Choose an option", type=click.Choice(['1', '2', '3', '4']))
 
         if choice == '1':
             player = create_new_user()
@@ -51,7 +49,6 @@ def main_menu():
 
 def adventure(player):
     while True:
-
         click.echo("ATLA Menu:")
         click.echo("1. Start Game")
         click.echo("2. Check Skills")
@@ -63,7 +60,6 @@ def adventure(player):
         if adventure_choice == '1':
             print("Debug: entering map")
             enter_map(player)
-            #!battle logic
         if adventure_choice == '2':
             skills = Abilities.get_skills_for_player(player.id)
             click.echo(f"Your skills: {', '.join(skills)}")
@@ -71,7 +67,7 @@ def adventure(player):
             click.echo(f"Your Health: {player.health}")
         elif adventure_choice == '4':
             click.echo("Returning to the Main Menu...")
-            return  # Return to the main menu
+            return
         else:
             click.echo("Invalid choice. Please enter '1', '2', '3', or '4'.")
 
@@ -93,13 +89,10 @@ def enter_map(player):
     map_instance.add_connection(9, "North", 8)
     map_instance.add_connection(8, "West", 15)
 
-
     locations = Location.load_locations(map_instance)
-    current_location = locations[0]  # Assuming the starting location is the first in the list
-    # display_location(current_location, locations)
+    current_location = locations[0]
 
     while True:
-
         display_location(current_location, locations)
         direction = input("\nEnter the direction to move (q to quit): ").capitalize()
 
@@ -107,54 +100,32 @@ def enter_map(player):
             print("Exiting the map. Goodbye!")
             return
 
-
-
         connected_location_id = map_instance.get_connected_location_id(current_location.id, direction)
-
-
 
         if connected_location_id is not None:
             new_location = next((loc for loc in locations if loc.id == connected_location_id), None)
             opponent_at_location = new_location.retrieve_opponent()
             current_category = new_location.retrieve_category()
 
-
-
             if opponent_at_location is not None:
-
-
                 # Check for existing battle record
                 existing_battle_records = Battle.all_battles()
 
-                if existing_battle_records:
-                    for battle_record in existing_battle_records:
-                        print(f"DEBUG: checking battle: {battle_record.player_id, battle_record.opponent_id }")
+                for battle_record in existing_battle_records:
+                    if battle_record.player_id == player.id and battle_record.opponent_id == opponent_at_location.id:
+                        if battle_record.status == 0:
+                            battle = Battle.get_battle_by_id(battle_record.id)
+                            battle_outcome = battle.start_battle(player, opponent_at_location, current_category)
 
-                        if battle_record.player_id == player.id and battle_record.opponent_id == opponent_at_location.id:
-                            print(f"DEBUG: Are we here? You found a battle record")
-
-                            if battle_record.status == 0:
-
-                                print(f"DEBUG: entered loop where 0")
-                                battle = Battle.get_battle_by_id(battle_record.id)
-
-                                print(f"DEBUG battle: {battle}")
-                                battle_outcome = battle.start_battle(battle, player, opponent_at_location, current_category)
-
-                                # Check outcome of battle
-
-
-                                if battle_outcome == "win":
-                                    click.echo("Congratulations! You won the battle.")
-
-                                    # Move to new location
-                                    current_location = new_location
-                                elif battle_outcome == "retreat":
-                                    click.echo("You retreated from the battle")
-                                    break
-
-                            else:
-                                click.echo("You have already defeated this opponent")
+                            if battle_outcome == "win":
+                                click.echo("Congratulations! You won the battle.")
+                                # Move to new location
+                                current_location = new_location
+                            elif battle_outcome == "retreat":
+                                click.echo("You retreated from the battle")
+                                break
+                        else:
+                            pass
                 else:
                     # No existing battle record
                     print("Debug: No existing battle record found")
@@ -163,14 +134,12 @@ def enter_map(player):
                     # Add battle record to the database
                     new_battle.add_battle(player.id, opponent_at_location.id, 0)
                     # Start the battle
-                    print(f"DEBUG Has the battle been created: {new_battle}")
-                    battle_outcome = new_battle.start_battle(new_battle, player, opponent_at_location, current_category)
+                    battle_outcome = new_battle.start_battle(player, opponent_at_location, current_category)  # Pass current_category
                     # Check outcome of battle
                     print(f"Debug: Battle outcome: {battle_outcome}")
 
                     if battle_outcome == "win":
                         click.echo("You are ready for your next battle!")
-
                         # Move to new location
                         current_location = new_location
                     elif battle_outcome == "retreat":
@@ -185,10 +154,8 @@ def enter_map(player):
         elif current_location is None:
             print("Error: Invalid connected location ID.")
             break
-
         else:
             print("Error: Invalid direction. Please choose a valid direction.")
-
 
 if __name__ == "__main__":
     welcome()
