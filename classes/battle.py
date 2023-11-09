@@ -1,19 +1,21 @@
 import sqlite3
 import click
 import random
-from classes.player import Player  # Import Player class from the appropriate location
+# Import Player class from the appropriate location
 
 CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
 class Battle():
-    def __init__(self, player_id, opponent_id, id=None):
+    def __init__(self, player_id, opponent_id, status=0,id=None):
         self.player_id = player_id
         self.opponent_id = opponent_id
+        self.status = status
         self.id = id
-        self.status = None  #!potentially need to change
+
 
     def start_battle(self, player, opponent, category):
+        #!comments out
         if self.status is None:
             self.status = 0  # Initialize status if it's None
 
@@ -130,7 +132,7 @@ class Battle():
         CURSOR.execute(sql)
         CONN.commit()
 
-    def add_battle(self, player_id, opponent_id, status=0):
+    def add_battle(self, player_id, opponent_id, status=0): #!remove status=0?
         sql = """
             INSERT INTO battles (player_id, opponent_id, status)
             VALUES (?, ?, ?)
@@ -148,7 +150,11 @@ class Battle():
         """
         try:
             CURSOR.execute(sql, (status, self.id))
+            print(f"STATUS: {status}")
+            print(f"ID IN UPDATE: {self.id}")
+            print("before commit")
             CONN.commit()
+            print("after commit")
         except Exception as e:
             print(f"An error occurred while updating the database: {str(e)}")
 
@@ -160,7 +166,7 @@ class Battle():
         """
         rows = CURSOR.execute(sql).fetchall()
 
-        return [cls(row[1], row[2], row[0]) for row in rows]
+        return [cls(row[1], row[2], row[3], row[0]) for row in rows] #!adds row[3]
 
     @classmethod
     def get_battle_by_id(cls, id):
@@ -172,7 +178,7 @@ class Battle():
         row = CURSOR.execute(sql, (id,)).fetchone()
 
         if row is not None:
-            return cls(row[1], row[2], row[0]) #!removed row[3]
+            return cls(row[1], row[2], row[3], row[0]) #!adds row[3]
         return None
 
     @classmethod
