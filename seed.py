@@ -86,7 +86,31 @@ skill_data = [
     ("Inferno Pillar", "Summons a towering pillar of fire directly beneath the target erupting from the ground.", 20, "fire"),
     ("Dragon’s Maw", "Releases a concentrated, dragon-shaped burst of flame from their fists or mouth.", 20, "fire"),
     ("Cinder Shield", "Swirling vortex of flames around themselves, which serves as a defense mechanism. Incoming attacks are either incinerated or have their damage significantly reduced while this shield is active.", 15, "fire"),
-    ("Phoenix Flight", "Ultimate display of fire mastery, this skill allows the firebender to launch into the air surrounded by a fiery aura, and then dive back down to the ground creating a massive explosion on impact.", 30, "fire")
+    ("Phoenix Flight", "Ultimate display of fire mastery, this skill allows the firebender to launch into the air surrounded by a fiery aura, and then dive back down to the ground creating a massive explosion on impact.", 30, "fire"),
+    ("Air Blast", "powerful gust of wind that blasts opponents backwards", 10, "neutral"),
+    ("Air Scooter", "ball of compressed air that allows the user to move away", 10, "neutral"),
+    ("Air Shield", "protective barrier of air to block attacks", 20, "neutral"),
+    ("Air Slice", "sharp blade used for cutting", 15, "neutral"),
+    ("Air Swirl", "tornado-like vortex to disorient and attack opponents", 20, "neutral"),
+    ("Air Glide", "glide through the air using bending", 15, "neutral"),
+    ("Rock Throw", "Throw a large rock to damage opponents", 10, "neutral"),
+    ("Rock Cuffs", "Use the Earth to grab and immobilize your opponent", 15, "neutral"),
+    ("Rock Armor", "Create a layer of armor out of the earth", 20, "neutral"),
+    ("Sand Blast", "Generate a big blast of concentrated sand to weaken your opponent", 20, "neutral"),
+    ("Compressed Rock Bullets", "Turn rocks into bullets to pierce enemy armor", 25, "neutral"),
+    ("Rock Gloves", "Detachable hands, maintaining the hand shape able to grab and restrain the opponent from a distance.", 25, "neutral"),
+    ("Waterball", "Create a water ball to possibly use as defense or to slow opponents", 10, "neutral"),
+    ("Ice Blade", "This Ice blade can be very sharp and might do some damage", 15, "neutral"),
+    ("Water Jet", "Send a blast of water at your opponent", 15, "neutral"),
+    ("Tidal Wave", "Creating a massive wave that can harm multiple opponents at once", 20, "neutral"),
+    ("Multiple Water Whips", "These can be used to attack and defend from multiple angles at once", 25, "neutral"),
+    ("Water Compression", "Having Enough power over water to compress its volume, compacting several thousands of gallons into a small volume", 25, "neutral"),
+    ("Blazing Arc", "Creates a crescent-shaped wave of fire that sweeps across the battlefield, engulfing multiple enemies in flame.", 10, "neutral"),
+    ("Ember Step", "Firebender momentarily transforms into a flicker of flame, dashing to a new location. A burst of fire emanates outward, damaging nearby foes.", 15, "neutral"),
+    ("Inferno Pillar", "Summons a towering pillar of fire directly beneath the target erupting from the ground.", 20, "neutral"),
+    ("Dragon’s Maw", "Releases a concentrated, dragon-shaped burst of flame from their fists or mouth.", 20, "neutral"),
+    ("Cinder Shield", "Swirling vortex of flames around themselves, which serves as a defense mechanism. Incoming attacks are either incinerated or have their damage significantly reduced while this shield is active.", 15, "neutral"),
+    ("Phoenix Flight", "Ultimate display of fire mastery, this skill allows the firebender to launch into the air surrounded by a fiery aura, and then dive back down to the ground creating a massive explosion on impact.", 30, "neutral")
 ]
 
 player_data = [
