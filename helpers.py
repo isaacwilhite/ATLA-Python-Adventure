@@ -4,7 +4,9 @@ import sys
 from classes.location import *
 import subprocess
 import os
+from classes.abilities import *
 
+ABILITY_NUMBER = [1,7,13,19]
 def create_new_user():
     click.echo("Welcome, new Avatar! You can create your username now.")
     username = click.prompt("Please input your username", type=str).lower()
@@ -27,6 +29,10 @@ def create_new_user():
     else:
         new_player = Player(username=username)
         new_player.save()
+        length = len(Player.all())
+        print(f"DEBUG: {new_player, length}")
+        for number in ABILITY_NUMBER:
+            Abilities.create_db_instance(length, number)
         return new_player
 
 def login_existing_user():
