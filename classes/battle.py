@@ -11,7 +11,7 @@ class Battle():
         self.player_id = player_id
         self.opponent_id = opponent_id
         self.id = id
-        self.status = None  # Initialize status attribute
+        self.status = 0  # Initialize status attribute
 
     def start_battle(self, player, opponent, category):
         if self.status is None:
@@ -45,7 +45,7 @@ class Battle():
             hint_skill = random.choice(opponent_solution)
 
             available_skills = player.get_all_skill_data_by_category(category)
-
+            print(f"YOUR SKILLS: {available_skills}")
             skill_info = next((skill for skill in available_skills if skill[0] == hint_skill), None)
 
             if skill_info is None:
@@ -135,7 +135,7 @@ class Battle():
         CURSOR.execute(sql, (player_id, opponent_id, status))
         CONN.commit()
 
-        self.id = CURSOR.lastrowid
+        # self.id = CURSOR.lastrowid
 
     def update_battle_status(self, status):
         sql = """
