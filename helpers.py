@@ -34,6 +34,8 @@ def create_new_user():
         print(f"DEBUG: {new_player, length}")
         for number in ABILITY_NUMBER:
             Abilities.create_db_instance(length, number)
+        for number in range(25, 49):
+            Abilities.create_db_instance(length, number)
         return new_player
 
 def login_existing_user():
