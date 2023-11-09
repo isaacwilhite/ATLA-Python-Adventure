@@ -88,6 +88,10 @@ def enter_map(player):
     map_instance.add_connection(10, "Southwest", 9)
     map_instance.add_connection(9, "North", 8)
     map_instance.add_connection(8, "West", 15)
+    map_instance.add_connection(15, "Northwest", 16)
+    map_instance.add_connection(16, "East", 17)
+    map_instance.add_connection(17, "Southwest", 18)
+    map_instance.add_connection(18, "West", 19)
 
     locations = Location.load_locations(map_instance)
     current_location = locations[0]
