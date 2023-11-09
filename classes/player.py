@@ -126,6 +126,7 @@ class Player:
     # Return a list of tuples with (name, description, point_cost) for skills associated with the player if category matches
         from classes.abilities import Abilities
         all_skills = Abilities.all()
+        print(f"PLAYER CLASS: {all_skills}")
         skill_data = []
         for record in all_skills:
 
