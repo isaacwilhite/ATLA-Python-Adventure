@@ -34,6 +34,7 @@ def welcome():
         click.echo()
         click.echo()
         console.print(content, style="#ed9609")
+        click.echo()
 
 def main_menu():
     while True:
@@ -47,11 +48,15 @@ def main_menu():
         if choice == '1':
             player = create_new_user()
             adventure(player)
+            console.print("Congratulations you are now a full-fledged Avatar!", style="bold bright_green")
+            console.print("Get ready for Season 2 of ATLA Python Adventure Game!", style="bold bright_green")
             break
         elif choice == '2':
 
             player = login_existing_user()
             adventure(player)
+            console.print("Congratulations you are now a full-fledged Avatar!", style="bold bright_green")
+            console.print("Get ready for Season 2 of ATLA Python Adventure Game!", style="bold bright_green")
         elif choice == '3':
             remove_player_from_db()
         elif choice == '4':
