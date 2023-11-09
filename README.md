@@ -26,7 +26,9 @@ Before you can bend the elements, make sure you have Python and Pipenv installed
 git clone [repository-link]
 cd avatar-cli-adventure
 pipenv install
-pipenv run start
+pipenv shell
+pip install rich
+pip install click
 python cli.py
 ``````
 
