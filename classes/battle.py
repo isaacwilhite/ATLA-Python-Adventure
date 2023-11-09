@@ -29,7 +29,7 @@ class Battle():
                 for reward in reward_list:
                     print(f"Reward: {reward}")
                     print(f"Reward: {type(reward)}")
-                    Abilities.create_db_instance(player.id, reward)
+                    Abilities.create_db_instance(player.id, int(reward))
             except Exception as e:
                 print(f"An error occurred while updating the database: {str(e)}")
 
