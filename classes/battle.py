@@ -1,45 +1,36 @@
 import sqlite3
 import click
 import random
+from classes.player import Player  # Import Player class from the appropriate location
 
 CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
 class Battle():
-    def __init__(self, player_id, opponent_id, status=0, id=None):
+    def __init__(self, player_id, opponent_id, id=None):
         self.player_id = player_id
         self.opponent_id = opponent_id
-        self.status = status
         self.id = id
+        self.status = None  # Initialize status attribute
 
-#!must add properties to the different attributes
+    def start_battle(self, player, opponent, category):
+        if self.status is None:
+            self.status = 0  # Initialize status if it's None
 
-    def start_battle(self, battle, player, opponent, category):
         battle_result = self.battle(player, opponent, category)
-        print(f"DEBUG DO YOU HAVE BATTLE {battle}")
 
         if battle_result == "win":
             click.echo("You are one step closer to mastering all four elements! Proceed to the next step to continue your journey in becoming the Avatar.")
             try:
-                print(f"DEBUG: Are you trying")
-                print(f"DO You have an ID: {battle.id}")
-                self.update_battle_status(1)
+                if self.status == 0:
+                    self.update_battle_status(1)  # Update status if it's 0
                 from classes.abilities import Abilities
-                # Abilities.create_db_instance(player.id, place_holder)
-                #~add new skill to Abilities Class (existing function)
-                #! think about how to dynamically change the skill_id you want to add
             except Exception as e:
                 print(f"An error occurred while updating the database: {str(e)}")
 
             return "win"
 
         elif battle_result == "lose":
-            try:
-                self.update_battle_status(0)
-            except Exception as e:
-                print(f"An error occurred while updating the database: {str(e)}")
-
-            from player import Player
             player.faint()
             return "retreat"
         elif battle_result == "retreat":
@@ -53,16 +44,16 @@ class Battle():
             hint_skill = random.choice(opponent_solution)
 
             available_skills = player.get_all_skill_data_by_category(category)
-            print(f"DEBUG: {available_skills}")
+
             skill_info = next((skill for skill in available_skills if skill[0] == hint_skill), None)
-            print(f"DEBUG: {skill_info}")
+
             if skill_info is None:
                 click.echo("You don't have any skills to use!")
                 break
 
             skill_name, skill_description, skill_point_cost = skill_info
 
-            hint_description = skill_info[1]  # Description of the matching skill
+            hint_description = skill_info[1]
             click.echo(f"I think you may need a {hint_description}.")
 
             battle_result = self.perform_battle(available_skills, hint_skill)
@@ -85,12 +76,7 @@ class Battle():
             click.echo(f"You've been defeated by {opponent.name}. Better luck next time!")
             return "lose"
 
-    # def get_player_skill_choice(self, available_skills):
-    #     skill_menu = {str(i + 1): skill for i, skill in enumerate(available_skills)}
-    #     click.echo("Choose a skill to use:")
-    #     return click.prompt(menu=skill_menu, type=click.Choice(skill_menu.keys()))
 
-    #~ handles every move that a player makes
     def perform_battle(self, available_skills, opponent_solution):
         for skill_info in available_skills:
             skill_name, skill_description, skill_point_cost = skill_info
@@ -101,7 +87,7 @@ class Battle():
 
             click.echo("Which move do you want to use?")
             for i, skill_info in enumerate(available_skills):
-                skill_name, _, _ = skill_info  # Unpack only the skill name
+                skill_name, _, _ = skill_info
                 click.echo(f"{i + 1}. {skill_name}")
 
             skill_choice = click.prompt("Select a move", type=click.Choice(skill_menu.keys()))
@@ -111,15 +97,12 @@ class Battle():
 
             elif skill_choice.isdigit() and 1 <= int(skill_choice) <= len(available_skills):
                 chosen_skill = available_skills[int(skill_choice) - 1][0]
-                print(f"DEBUG: {chosen_skill}")
+
                 if chosen_skill == opponent_solution:
                     return "win move"
                 else:
                     return "lose move"
-            else:
-                click.echo("Invalid input. Please select an appropriate choice.")
-#!automatic checkpoint function
-    #~~~~~~~~~~~~~~~~~~~~~~CRUD~~~~~~~~~~~~~~~~~~~
+
     @classmethod
     def create_table(cls):
         sql = """
@@ -151,6 +134,8 @@ class Battle():
         CURSOR.execute(sql, (player_id, opponent_id, status))
         CONN.commit()
 
+        self.id = CURSOR.lastrowid
+
     def update_battle_status(self, status):
         sql = """
             UPDATE battles
@@ -158,14 +143,11 @@ class Battle():
             WHERE id = ?
         """
         try:
-            print(f"DEBUG YOUR ID: {self.id}")
-            print(f"DEBUG YOUR STATUS: {status}")
             CURSOR.execute(sql, (status, self.id))
             CONN.commit()
         except Exception as e:
             print(f"An error occurred while updating the database: {str(e)}")
 
-#!returns list of all battle instances
     @classmethod
     def all_battles(cls):
         sql = """
@@ -174,8 +156,8 @@ class Battle():
         """
         rows = CURSOR.execute(sql).fetchall()
 
-        return [cls(row[1], row[2], row[3], row[0]) for row in rows]
-#!returns battle by battle id
+        return [cls(row[1], row[2], row[0]) for row in rows]
+
     @classmethod
     def get_battle_by_id(cls, id):
         sql = """
@@ -189,8 +171,6 @@ class Battle():
             return cls(row[1], row[2], row[3], row[0])
         return None
 
-#association method
-    #battles that were won
     @classmethod
     def all(cls):
         sql = """
