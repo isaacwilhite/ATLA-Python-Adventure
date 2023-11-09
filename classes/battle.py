@@ -6,7 +6,7 @@ import random
 CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
-class Battle():
+class Battle(): #!added status
     def __init__(self, player_id, opponent_id, status=0,id=None):
         self.player_id = player_id
         self.opponent_id = opponent_id
@@ -150,11 +150,9 @@ class Battle():
         """
         try:
             CURSOR.execute(sql, (status, self.id))
-            print(f"STATUS: {status}")
-            print(f"ID IN UPDATE: {self.id}")
-            print("before commit")
+
             CONN.commit()
-            print("after commit")
+
         except Exception as e:
             print(f"An error occurred while updating the database: {str(e)}")
 
