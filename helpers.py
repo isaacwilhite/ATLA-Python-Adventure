@@ -5,6 +5,9 @@ from classes.location import *
 import subprocess
 import os
 from classes.abilities import *
+from rich.console import Console
+
+console = Console()
 
 ABILITY_NUMBER = [1,7,13,19]
 
@@ -86,10 +89,26 @@ def load_locations():
 
 def display_location(location, locations):
     # subprocess.run('clear' if os.name == 'posix' else 'cls', shell=True)
-    print(f"Location: {location.name}")
-    print(f"Description: {location.description}")
-    print(f"Category: {location.category}")
-    print("\nAvailable Directions:")
+    if location.category == "air":
+        console.print(f"Location: {location.name}", style="#dc8c24")
+        console.print(f"Description: {location.description}", style="#dc8c24")
+        console.print(f"Category: {location.category}", style="#dc8c24")
+        console.print("\nAvailable Directions:", style="#dc8c24")
+    elif location.category == "fire":
+        console.print(f"Location: {location.name}", style="#89OEO5")
+        console.print(f"Description: {location.description}", style="#89OEO5")
+        console.print(f"Category: {location.category}", style="#89OEO5")
+        console.print("\nAvailable Directions:", style="#89OEO5")
+    elif location.category == "water":
+        console.print(f"Location: {location.name}", style="#66d7eb")
+        console.print(f"Description: {location.description}", style="#66d7eb")
+        console.print(f"Category: {location.category}", style="#66d7eb")
+        console.print("\nAvailable Directions:", style="#66d7eb")
+    elif location.category == "earth":
+        console.print(f"Location: {location.name}", style="#295427")
+        console.print(f"Description: {location.description}", style="#295427")
+        console.print(f"Category: {location.category}", style="#295427")
+        console.print("\nAvailable Directions:", style="#295427")
     for direction, connected_location_id in location.directions.items():
         connected_location = next((loc for loc in locations if loc.id == connected_location_id), None)
         print(f"{direction.capitalize()}: {connected_location.name if connected_location else 'Unknown'}")

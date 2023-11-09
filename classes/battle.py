@@ -1,6 +1,8 @@
 import sqlite3
 import click
 import random
+from rich.console import Console
+console = Console()
 # Import Player class from the appropriate location
 
 CONN = sqlite3.connect("database.db")
@@ -22,7 +24,10 @@ class Battle(): #!added status
         battle_result = self.battle(player, opponent, category)
 
         if battle_result == "win":
-            click.echo("You are one step closer to mastering all four elements! Proceed to the next step to continue your journey in becoming the Avatar.")
+            console.print("You are one step closer to mastering all four elements!", style="bold bright_green")
+            click.echo()
+            console.print("Proceed to the next step to continue your journey in becoming the Avatar.", style="bold bright_green")
+            click.echo()
             try:
                 if self.status == 0:
                     self.update_battle_status(1)  # Update status if it's 0
@@ -44,8 +49,20 @@ class Battle(): #!added status
 
     def battle(self, player, opponent, category):
         opponent_solution = [skill.strip() for skill in opponent.solution.split(',')]
-        click.echo(f"{opponent.name} says:")
-        click.echo(opponent.dialogue)
+        console.print(f"{opponent.name} says:", style="bold")
+        click.echo()
+        if category == "air":
+            console.print(f"{opponent.dialogue}", style="#dc8c24")
+            click.echo()
+        elif category == "fire":
+            console.print(f"{opponent.dialogue}", style="#89OEO5")
+            click.echo()
+        elif category == "water":
+            console.print(f"{opponent.dialogue}", style="#66d7eb")
+            click.echo()
+        elif category == "earth":
+            console.print(f"{opponent.dialogue}", style="#295427")
+            click.echo()
 
         while opponent.health > 0 and player.health > 0:
             hint_skill = random.choice(opponent_solution)
@@ -60,17 +77,21 @@ class Battle(): #!added status
             skill_name, skill_description, skill_point_cost = skill_info
 
             hint_description = skill_info[1]
-            click.echo(f"I think you may need a {hint_description}.")
+            click.echo(f"I think you may need {hint_description}.")
+            click.echo()
 
             battle_result = self.perform_battle(available_skills, hint_skill)
 
             if battle_result == "win move":
                 opponent.health -= skill_point_cost
-                click.echo(f"You've hit the opponent with {skill_name}!")
+                console.print(f"You've hit the opponent with {skill_name}!", style = "bold bright_green")
+                click.echo()
+                console.print(f"{opponent.name}'s health has decreased to: {opponent.health}", style="bold reverse red")
+
                 opponent_solution.remove(hint_skill)
             elif battle_result == "lose move":
                 player.decrease_health(1)
-                click.echo(f"The opponent has hit you! Your health is now {player.health}.")
+                console.print(f"The opponent has hit you! Your health is now {player.health}.", style="bold reverse red")
             elif battle_result == "retreat":
                 click.echo("You've decided to retreat from battle.")
                 return "retreat"
@@ -92,6 +113,7 @@ class Battle(): #!added status
             skill_menu[str(len(available_skills) + 1)] = 'retreat'
 
             click.echo("Which move do you want to use?")
+            click.echo()
             for i, skill_info in enumerate(available_skills):
                 skill_name, _, _ = skill_info
                 click.echo(f"{i + 1}. {skill_name}")

@@ -1,4 +1,6 @@
 import click
+from rich.console import Console
+from rich.theme import Theme
 from classes.player import *
 from classes.abilities import *
 from classes.map import *
@@ -13,6 +15,15 @@ from helpers import (
     display_location,
     __init__,
 )
+console = Console()
+# custom_style_key =
+#     [
+#         "air": "dc8c24",
+#         "fire": "89OEO5",
+#         "fire-bold": "bold reverse red"
+#         "water":"66d7eb",
+#         "earth": "#295427"
+#     ]
 
 def welcome():
 
@@ -62,9 +73,10 @@ def adventure(player):
             enter_map(player)
         if adventure_choice == '2':
             skills = Abilities.get_skills_for_player(player.id)
-            click.echo(f"Your skills: {', '.join(skills)}")
+            console.print(f"Your skills: {', '.join(skills)}", style="cyan")
         elif adventure_choice == '3':
-            click.echo(f"Your Health: {player.health}")
+            console.print(f"Your Health: {player.health}", style = "bold bright_green")
+            click.echo()
         elif adventure_choice == '4':
             click.echo("Returning to the Main Menu...")
             return
@@ -99,6 +111,7 @@ def enter_map(player):
     while True:
         display_location(current_location, locations)
         direction = input("\nEnter the direction to move (q to quit): ").capitalize()
+        click.echo()
 
         if direction == 'Q':
             click.echo("Exiting the map. Goodbye!")
@@ -123,16 +136,16 @@ def enter_map(player):
                             battle_outcome = battle.start_battle(player, opponent_at_location, current_category)
 
                             if battle_outcome == "win":
-                                click.echo("Congratulations! You won the battle.")
+                                console.print("Congratulations! You won the battle.", style="bold bright_green")
                                 # Move to new location
                                 current_location = new_location
                                 battle_found = True #!set flag
                             elif battle_outcome == "retreat":
-                                click.echo("You retreated from the battle")
+                                console.print("You retreated from the battle", style="bold red")
                                 battle_found = True #!set flag
                                 break
                         else:
-                            click.echo("You already defeated this opponent")
+                            console.print("You already defeated this opponent", style = "green" )
                             current_location = new_location
                             battle_found = True #!set flag
                             break
@@ -153,16 +166,17 @@ def enter_map(player):
 
 
                     if battle_outcome == "win":
-                        click.echo("You are ready for your next battle!")
+                        console.print("You are ready for your next battle!", style="bold bright_green")
                         # Move to new location
                         current_location = new_location
                     elif battle_outcome == "retreat":
-                        click.echo("You retreated from the battle")
+                        console.print("You retreated from the battle", style="bold red")
                         break
             else:
                 # No opponent at the new location, move to new location
 
                 click.echo("Continue exploring to find an opponent")
+                click.echo()
                 current_location = new_location
 
         elif current_location is None:

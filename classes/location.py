@@ -80,7 +80,7 @@ class Location:
         rows = CURSOR.fetchall()
         for row in rows:
             location = cls(name=row[1], description=row[2], category=row[3], id=row[0])
-            print(f"Loading location: {location.id}, Directions: {map_instance.directions.get(location.id, {})}")
+            # print(f"Loading location: {location.id}, Directions: {map_instance.directions.get(location.id, {})}")
             location.directions = map_instance.directions.get(location.id, {})
             locations.append(location)
         return locations
