@@ -36,7 +36,7 @@ def main_menu():
             adventure(player)
             break
         elif choice == '2':
-            print("Debug: Entering main_menu and about to create or load a player")
+
             player = login_existing_user()
             adventure(player)
         elif choice == '3':

@@ -42,6 +42,7 @@ class Battle():
 
     def battle(self, player, opponent, category):
         opponent_solution = [skill.strip() for skill in opponent.solution.split(',')]
+        click.echo(f"{opponent.name} says:")
         click.echo(opponent.dialogue)
 
         while opponent.health > 0 and player.health > 0:
