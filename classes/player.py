@@ -126,15 +126,10 @@ class Player:
     # Return a list of tuples with (name, description, point_cost) for skills associated with the player if category matches
         from classes.abilities import Abilities
         all_skills = Abilities.all()
-        print(f"PLAYER CLASS: {all_skills}")
         skill_data = []
         for record in all_skills:
-            print(f"SELF>ID {self.id}")
-            print(f"RECORD[1] {record[1]}")
             if record[0] == self.id and record[4] == category:
                 skill_data.append((record[1], record[2], record[3]))
-                print(f"{self.id}")
-                print(f"{skill_data}")
         return skill_data
 
     def defeated_opponents(self):

@@ -27,8 +27,7 @@ class Battle():
                 from classes.abilities import Abilities
                 reward_list = [reward.strip() for reward in opponent.reward.split(',')]
                 for reward in reward_list:
-                    print(f"Reward: {reward}")
-                    print(f"Reward: {type(reward)}")
+
                     Abilities.create_db_instance(player.id, int(reward))
             except Exception as e:
                 print(f"An error occurred while updating the database: {str(e)}")
@@ -47,12 +46,10 @@ class Battle():
 
         while opponent.health > 0 and player.health > 0:
             hint_skill = random.choice(opponent_solution)
-            print(f"CATEGORY {category}")
+
             available_skills = player.get_all_skill_data_by_category(category)
-            print(f"SKILLS AVAILABLE{available_skills}")
-            print(f"HINT SKILL {hint_skill}")
+
             skill_info = next((skill for skill in available_skills if skill[0] == hint_skill), None)
-            print(f"SKILL INFO: {skill_info}")
             if skill_info is None:
                 click.echo("You don't have any skills to use!")
                 break
