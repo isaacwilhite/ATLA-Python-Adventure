@@ -15,7 +15,7 @@ from helpers import (
 )
 
 def welcome():
-    print("Debug: Entering welcome function")
+
     file_path = 'txt/intro.txt'
 
     with open(file_path, 'r') as file:
@@ -36,7 +36,7 @@ def main_menu():
             adventure(player)
             break
         elif choice == '2':
-            print("Debug: Entering main_menu and about to create or load a player")
+
             player = login_existing_user()
             adventure(player)
         elif choice == '3':
@@ -134,11 +134,15 @@ def enter_map(player):
                 else:
                     # No existing battle record
 
-                    new_battle = Battle(player.id, opponent_at_location.id)
+                    new_battle = Battle(player.id, opponent_at_location.id, 0)
 
                     # Add battle record to the database
                     new_battle.add_battle(player.id, opponent_at_location.id, 0)
                     # Start the battle
+                    print(f"NEW BATTLE ID?: {new_battle.id}")
+
+                    # new_battle = Battle.get_battle_by_id(new_battle.id)#!new code added
+
                     battle_outcome = new_battle.start_battle(player, opponent_at_location, current_category)  # Pass current_category
                     # Check outcome of battle
 
