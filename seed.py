@@ -25,19 +25,19 @@ Battle.create_table()
 
 #table data
 opponent_data = [
-    ("Monk Tashi", "You have not been training hard enough! Let me test your skills in airbending and see if you can defeat me!", "Air Blast", 10, 2),
-    ("Guru Pathik", "You must strengthen your spiritual connection to the world around you. Only by opening your chakras, can you finally master the Air element. Let’s test your skills!", "Air Blast,Air Scooter,Air Slice", 35, 3),
-    ("Monk Giatso", "You have made it so far! I believe in your abilities to become an amazing Avatar. Let me see your bending in action before we give you your airbending tattoos and make you a full airbender!", "Air Blast,Air Scooter,Air Slice,Air Glide,Air Shield", 70, 4),
-    ("King Bumi", "Young avatar you have much to learn. If you want to save your friends you must prove your skills are a match for mine!", "Rock Throw,Rock Cuffs,Rock Armor,Rock Gloves,Sand Blast", 70, 8),
-    ("The Boulder", "You may be big, but you ain’t bad! The Boulder’s gonna win this, in a Land-slide!", "Rock Throw,Rock Cuffs,Rock Armor", 35, 9),
-    ("Toph", "You have done well, but you need to kick it up a notch. Let’s work on form, you see, it comes from a strong stance.", "Rock Throw", 10, 10),
-    ("Yue", "Use the moon to your advantage Avatar! As the moon increases your abilities, you will need to learn how to control them.", "Waterball,Ice Blade,Tidal Wave", 35, 12),
-    ("Katara", "Okay, remember, I’m still learning too, so let’s take this nice and easy!", "Waterball", 10, 13),
-    ("Due", "You’ve merely scratched the surface of your abilities, I've been learning for years. You're no match for me!", "Waterball,Ice Blade,Tidal Wave,Water Jet,Multiple Water Whips", 70, 14),
-    ("Admiral Zhao", "I am Admiral Zhao, and my ambition burns brighter than the flames I command. Your little journey ends here, with your defeat!", "Blazing Arc", 10, 16),
-    ("Prince Zuko", "I am Prince Zuko, son of Fire Lord Ozai, and I will regain my honor by defeating you!", "Blazing Arc,Ember Step,Inferno Pillar", 35, 17),
-    ("Azula", "I’m Princess Azula. Only the best and strongest can stand by my side. Do you have what it takes, or will you crumble like so many before you?", "Blazing Arc,Ember Step,Inferno Pillar,Dragon's Maw,Phoenix Flight", 75, 18),
-    ("Fire Lord Ozai", "I am Fire Lord Ozai, the Phoenix King, the most powerful firebender in the world. Bow before me or be consumed by my fire!", "Air Blast,Air Scooter,Air Slice,Air Glide,Air Shield,Rock Throw,Rock Cuffs,Rock Armor,Rock Gloves,Sand Blast,Waterball,Ice Blade,Tidal Wave,Water Jet,Multiple Water Whips,Blazing Arc,Ember Step,Inferno Pillar,Dragon's Maw,Phoenix Flight", 150, 19)
+    ("Monk Tashi", "You have not been training hard enough! Let me test your skills in airbending and see if you can defeat me!", "Air Blast", 10, 2, "2,4"),
+    ("Guru Pathik", "You must strengthen your spiritual connection to the world around you. Only by opening your chakras, can you finally master the Air element. Let’s test your skills!", "Air Blast,Air Scooter,Air Slice", 35, 3, "3,6"),
+    ("Monk Giatso", "You have made it so far! I believe in your abilities to become an amazing Avatar. Let me see your bending in action before we give you your airbending tattoos and make you a full airbender!", "Air Blast,Air Scooter,Air Slice,Air Glide,Air Shield", 70, 4, "5"),
+    ("Toph", "You have done well, but you need to kick it up a notch. Let’s work on form, you see, it comes from a strong stance.", "Rock Throw", 10, 10, "8,9"),
+    ("The Boulder", "You may be big, but you ain’t bad! The Boulder’s gonna win this, in a Land-slide!", "Rock Throw,Rock Cuffs,Rock Armor", 35, 9, "10,12"),
+    ("King Bumi", "Young avatar you have much to learn. If you want to save your friends you must prove your skills are a match for mine!", "Rock Throw,Rock Cuffs,Rock Armor,Rock Gloves,Sand Blast", 70, 8, "11"),
+    ("Katara", "Okay, remember, I’m still learning too, so let’s take this nice and easy!", "Waterball", 10, 13, "14,16"),
+    ("Yue", "Use the moon to your advantage Avatar! As the moon increases your abilities, you will need to learn how to control them.", "Waterball,Ice Blade,Tidal Wave", 35, 12, "15,16"),
+    ("Due", "You’ve merely scratched the surface of your abilities, I've been learning for years. You're no match for me!", "Waterball,Ice Blade,Tidal Wave,Water Jet", 70, 14, "17"),
+    ("Admiral Zhao", "I am Admiral Zhao, and my ambition burns brighter than the flames I command. Your little journey ends here, with your defeat!", "Blazing Arc", 10, 16,"20,21"),
+    ("Prince Zuko", "I am Prince Zuko, son of Fire Lord Ozai, and I will regain my honor by defeating you!", "Blazing Arc,Ember Step,Inferno Pillar", 35, 17,"22,24"),
+    ("Azula", "I’m Princess Azula. Only the best and strongest can stand by my side. Do you have what it takes, or will you crumble like so many before you?", "Blazing Arc,Ember Step,Inferno Pillar,Dragon's Maw,Phoenix Flight", 75, 18, "23"),
+    ("Fire Lord Ozai", "I am Fire Lord Ozai, the Phoenix King, the most powerful firebender in the world. Bow before me or be consumed by my fire!", "Air Blast,Air Scooter,Air Slice,Air Glide,Air Shield,Rock Throw,Rock Cuffs,Rock Armor,Rock Gloves,Sand Blast,Waterball,Ice Blade,Tidal Wave,Water Jet,Multiple Water Whips,Blazing Arc,Ember Step,Inferno Pillar,Dragon's Maw,Phoenix Flight", 150, 19, "0")
 ]
 
 location_data = [
@@ -129,8 +129,8 @@ abilities_data = [
 
 ##opponent
 for data in opponent_data:
-    name, dialogue, solution, reward_id, location_id = data
-    Opponent.create(name, dialogue, solution, reward_id, location_id)
+    name, dialogue, solution, health, location_id, reward = data
+    Opponent.create(name, dialogue, solution, health, location_id, reward)
 ##location
 for data in location_data:
     name, description, category = data

@@ -30,10 +30,13 @@ def create_new_user():
     else:
         new_player = Player(username=username)
         new_player.save()
-        length = len(Player.all())
-        print(f"DEBUG: {new_player, length}")
+
+        new_player = Player.find_by_username(username) #!new code added/must retrieve from database
+
         for number in ABILITY_NUMBER:
-            Abilities.create_db_instance(length, number)
+            Abilities.create_db_instance(new_player.id, number)
+        for number in range(25, 49):
+            Abilities.create_db_instance(new_player.id, number)
         return new_player
 
 def login_existing_user():

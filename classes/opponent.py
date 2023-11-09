@@ -4,18 +4,19 @@ CONN = sqlite3.connect("database.db")
 CURSOR = CONN.cursor()
 
 class Opponent:
-    def __init__(self, name, dialogue, solution, health, location_id, id=None):
+    def __init__(self, name, dialogue, solution, health, location_id, reward, id=None):
         self._name = name
         self._dialogue = dialogue
         self._solution = solution  # Added this line
         self.health = health
         self.location_id = location_id
+        self.reward = reward
         self.id = id
 
     @property
     def name(self):
         return self._name
-    
+
     @name.setter
     def name(self, new_name):
         if isinstance(new_name, str) and not hasattr(self, '_name'):
@@ -26,7 +27,7 @@ class Opponent:
     @property
     def dialogue(self):
         return self._dialogue
-    
+
     @dialogue.setter
     def dialogue(self, new_dialogue):
         if isinstance(new_dialogue, str) and not hasattr(self, '_dialogue'):
@@ -37,7 +38,7 @@ class Opponent:
     @property
     def solution(self):
         return self._solution
-    
+
     @solution.setter
     def solution(self, new_solution):
         if isinstance(new_solution, str) and not hasattr(self, '_solution'):
@@ -54,7 +55,8 @@ class Opponent:
             dialogue TEXT,
             solution TEXT,
             health INTEGER,
-            location_id INTEGER)
+            location_id INTEGER,
+            reward TEXT)
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -69,15 +71,15 @@ class Opponent:
 
     def save(self):
         sql = """
-            INSERT INTO opponents (name, dialogue, solution, health, location_id)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO opponents (name, dialogue, solution, health, location_id, reward)
+            VALUES (?, ?, ?, ?, ?, ?)
         """
-        CURSOR.execute(sql, (self.name, self.dialogue, self.solution, self.health, self.location_id))
+        CURSOR.execute(sql, (self.name, self.dialogue, self.solution, self.health, self.location_id, self.reward))
         CONN.commit()
 
     @classmethod
-    def create(cls, name, dialogue, solution, health, location_id):
-        opponent = cls(name, dialogue, solution, health, location_id)
+    def create(cls, name, dialogue, solution, health, location_id, reward):
+        opponent = cls(name, dialogue, solution, health, location_id, reward)
         opponent.save()
         return opponent
 
@@ -89,4 +91,4 @@ class Opponent:
         """
         opponents_data = CURSOR.execute(sql).fetchall()
         CONN.commit()
-        return [cls(data[1], data[2], data[3], data[4], data[5], data[0]) for data in opponents_data]
+        return [cls(data[1], data[2], data[3], data[4], data[5], data[6], data[0]) for data in opponents_data]

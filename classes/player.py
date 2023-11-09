@@ -128,7 +128,6 @@ class Player:
         all_skills = Abilities.all()
         skill_data = []
         for record in all_skills:
-
             if record[0] == self.id and record[4] == category:
                 skill_data.append((record[1], record[2], record[3]))
         return skill_data

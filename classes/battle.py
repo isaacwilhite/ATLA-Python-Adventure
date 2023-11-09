@@ -25,7 +25,10 @@ class Battle():
                 if self.status == 0:
                     self.update_battle_status(1)  # Update status if it's 0
                 from classes.abilities import Abilities
-                Abilities.create_db_instance(player.id, 5) #! add reward column
+                reward_list = [reward.strip() for reward in opponent.reward.split(',')]
+                for reward in reward_list:
+
+                    Abilities.create_db_instance(player.id, int(reward))
             except Exception as e:
                 print(f"An error occurred while updating the database: {str(e)}")
 
@@ -47,7 +50,6 @@ class Battle():
             available_skills = player.get_all_skill_data_by_category(category)
 
             skill_info = next((skill for skill in available_skills if skill[0] == hint_skill), None)
-
             if skill_info is None:
                 click.echo("You don't have any skills to use!")
                 break

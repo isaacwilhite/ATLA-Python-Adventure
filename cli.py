@@ -58,7 +58,7 @@ def adventure(player):
         adventure_choice = click.prompt("Choose an option (1/2/3/4)", type=click.Choice(['1', '2', '3', '4']))
 
         if adventure_choice == '1':
-            print("Debug: entering map")
+
             enter_map(player)
         if adventure_choice == '2':
             skills = Abilities.get_skills_for_player(player.id)
@@ -72,7 +72,7 @@ def adventure(player):
             click.echo("Invalid choice. Please enter '1', '2', '3', or '4'.")
 
 def enter_map(player):
-    print("Debug: Inside enter_map function")
+
     map_instance = Map()
 
     # Add connections between locations
@@ -101,7 +101,7 @@ def enter_map(player):
         direction = input("\nEnter the direction to move (q to quit): ").capitalize()
 
         if direction == 'Q':
-            print("Exiting the map. Goodbye!")
+            click.echo("Exiting the map. Goodbye!")
             return
 
         connected_location_id = map_instance.get_connected_location_id(current_location.id, direction)
@@ -133,15 +133,15 @@ def enter_map(player):
                             current_location = new_location
                 else:
                     # No existing battle record
-                    print("Debug: No existing battle record found")
+
                     new_battle = Battle(player.id, opponent_at_location.id)
-                    print("Debug: Creating a new battle record")
+
                     # Add battle record to the database
                     new_battle.add_battle(player.id, opponent_at_location.id, 0)
                     # Start the battle
                     battle_outcome = new_battle.start_battle(player, opponent_at_location, current_category)  # Pass current_category
                     # Check outcome of battle
-                    print(f"Debug: Battle outcome: {battle_outcome}")
+
 
                     if battle_outcome == "win":
                         click.echo("You are ready for your next battle!")
@@ -152,7 +152,7 @@ def enter_map(player):
                         break
             else:
                 # No opponent at the new location, move to new location
-                print("Debug: No opponent at the new location")
+
                 click.echo("Continue exploring to find an opponent")
                 current_location = new_location
 
